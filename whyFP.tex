@@ -1,4 +1,4 @@
-% Created 2018-04-04 Wed 00:10
+% Created 2018-04-04 Wed 11:13
 % Intended LaTeX compiler: pdflatex
 \documentclass[presetation]{beamer}
 \usepackage[utf8]{inputenc}
@@ -29,7 +29,7 @@
 
 \maketitle
 
-\begin{frame}[label={sec:org010f9fd}]{Plan for the talk}
+\begin{frame}[label={sec:org86111c2}]{Plan for the talk}
 \begin{enumerate}
 \item Why Functional Programming is intellectually interesting
 \end{enumerate}
@@ -46,25 +46,25 @@ your employer
 \end{frame}
 
 
-\begin{frame}[label={sec:orgd595cf1}]{First computers were imperative by necessity}
+\begin{frame}[label={sec:org559d467}]{First computers were imperative by necessity}
 \begin{center}
 \includegraphics[width=.9\linewidth]{./images/machineCode.png}
 \end{center}
 \end{frame}
 
-\begin{frame}[label={sec:org48b670e}]{Programming languages help us think}
+\begin{frame}[label={sec:orgc7373ce}]{Programming languages help us think}
 \begin{center}
 \includegraphics[width=.9\linewidth]{./images/lang.jpeg}
 \end{center}
 \end{frame}
 
-\begin{frame}[label={sec:orgbe15302}]{Languages encourage patterns of thought}
+\begin{frame}[label={sec:orga9a6de2}]{Languages encourage patterns of thought}
 \begin{center}
 \includegraphics[width=.9\linewidth]{./images/papert.jpeg}
 \end{center}
 \end{frame}
 
-\begin{frame}[label={sec:orgd9453a6}]{There are dissenting opinions}
+\begin{frame}[label={sec:org7075503}]{There are dissenting opinions}
 \begin{center}
 \includegraphics[width=.9\linewidth]{./images/noVal.jpg}
 \end{center}
@@ -74,7 +74,7 @@ your employer
 \end{frame}
 
 
-\begin{frame}[fragile,label={sec:org925eeac}]{Counterexamples of good languages}
+\begin{frame}[fragile,label={sec:org544e3bc}]{Counterexamples of good languages}
  \begin{center}
 \includegraphics[width=.6\linewidth]{./images/bashHorror.jpeg}
 \end{center}
@@ -89,7 +89,7 @@ your employer
 \end{frame}
 
 
-\begin{frame}[fragile,label={sec:org0f7cb1e}]{You can't talk about poor language design and not mention JS}
+\begin{frame}[fragile,label={sec:org1743c69}]{You can't talk about poor language design and not mention JS}
  \begin{verbatim}
 console.log(0.1 + 0.2);
 console.log(0.1 + 0.2 == 0.3);
@@ -103,7 +103,7 @@ console.log(0.1 + 0.2 == 0.3);
 
 
 
-\begin{frame}[fragile,label={sec:orgd740760}]{Comparisons can fail}
+\begin{frame}[fragile,label={sec:org6347cf8}]{Comparisons can fail}
  \begin{verbatim}
 console.log(1 < 2 < 3);
 console.log(3 > 2 > 1);
@@ -115,7 +115,7 @@ console.log(3 > 2 > 1);
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgc9473cd}]{Even assignment is perilous}
+\begin{frame}[fragile,label={sec:org960434e}]{Even assignment is perilous}
  \begin{verbatim}
 var a= [1,2,3];
 a[10]=99;
@@ -129,7 +129,7 @@ console.log(a[6])
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:orgcb611c4}]{Yet Haskell allows us to}
+\begin{frame}[label={sec:org2a20c0a}]{Yet Haskell allows us to}
 \pause
 \begin{itemize}
 \item Explore recursion both in functions and in data structures
@@ -145,7 +145,7 @@ master abstraction
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:orgb6eb860}]{Right triangle problem}
+\begin{frame}[label={sec:org34e7716}]{Right triangle problem}
 \begin{block}{Let's find a problem that puts constraints on tuples}
 \begin{itemize}
 \item Which right triangle that has integers for all sides and all sides
@@ -161,7 +161,7 @@ equal to or smaller than 10 has a perimeter of 24?
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[fragile,label={sec:org1ef8fc9}]{Right triangle problem relax solution}
+\begin{frame}[fragile,label={sec:org485f41e}]{Right triangle problem relax solution}
  \begin{block}{Integer sides all < 10 and perimeter = 24}
 \begin{itemize}
 \item generate all tuples of sides less than 10
@@ -190,7 +190,7 @@ Prelude Control.Applicative| Prelude Control.Applicative| 4
 \end{frame}
 
 
-\begin{frame}[fragile,label={sec:orgeadfb4e}]{Adding the perimeter constraint}
+\begin{frame}[fragile,label={sec:org4393f83}]{Adding the perimeter constraint}
  \begin{block}{Let's add constraints}
 \begin{itemize}
 \item the perimeter equal 24
@@ -218,7 +218,7 @@ Prelude Control.Applicative| Prelude Control.Applicative| [(6,8,10),(8,6,10)]
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org074257b}]{Type system}
+\begin{frame}[fragile,label={sec:org9c43f74}]{Type system}
  \begin{block}{Haskell is statically typed}
 \begin{itemize}
 \item Haskell allows students inquire about the type
@@ -269,7 +269,7 @@ Evan
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:orgc55fa51}]{Decompose the typeclass}
+\begin{frame}[label={sec:org1945b97}]{Decompose the typeclass}
 \begin{block}{(==) :: Eq a => a -> a -> Bool}
 \begin{itemize}
 \item Typeclass constraint 
@@ -291,7 +291,7 @@ Evan
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[fragile,label={sec:org2f51309}]{Interface of Eq}
+\begin{frame}[fragile,label={sec:orge5cc17d}]{Interface of Eq}
  \begin{block}{The Eq typeclass provides an interface for testing for equality}
 \begin{itemize}
 \item Eq is used for types that support equality testing
@@ -323,7 +323,7 @@ True
 \end{frame}
 
 
-\begin{frame}[fragile,label={sec:org64a02d3}]{Introducing Ord typeclass}
+\begin{frame}[fragile,label={sec:org3cad51b}]{Introducing Ord typeclass}
  \begin{block}{Ord is for types that have an ordering}
 \begin{itemize}
 \item We can see the type of '>' comparison
@@ -349,7 +349,7 @@ GT
 \end{frame}
 
 
-\begin{frame}[label={sec:org9a60324}]{Ord has a connection with inference}
+\begin{frame}[label={sec:org43cf92d}]{Ord has a connection with inference}
 \begin{block}{Ord is important in statistics}
 \begin{itemize}
 \item Ord can be used to explain: \alert{ordinal levels of measurement}
@@ -362,7 +362,7 @@ GT
 \end{frame}
 
 
-\begin{frame}[fragile,label={sec:org3fba922}]{Introducing Show typeclass}
+\begin{frame}[fragile,label={sec:org29b26b6}]{Introducing Show typeclass}
  \begin{block}{Everything except function has been part of show}
 \begin{itemize}
 \item It works like Java or Ruby's toString methods
@@ -384,7 +384,7 @@ True
 \end{frame}
 
 
-\begin{frame}[fragile,label={sec:orge2c35bd}]{Introducing Read typeclass}
+\begin{frame}[fragile,label={sec:org7472a15}]{Introducing Read typeclass}
  \begin{block}{Read is the inverse of show}
 \begin{itemize}
 \item It works reads a string and returns a type which supports the interface Read
@@ -414,7 +414,7 @@ True
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org116d181}]{Limits to the type inference system}
+\begin{frame}[fragile,label={sec:org2d1d835}]{Limits to the type inference system}
  \begin{block}{Let's look at a type error}
 \begin{verbatim}
 read 4
@@ -422,11 +422,11 @@ read 4
 \end{verbatim}
 
 \begin{verbatim}
-<interactive>:2035:6: error:
+<interactive>:2327:6: error:
     • Could not deduce (Num String) arising from the literal ‘4’
       from the context: Read a
         bound by the inferred type of it :: Read a => a
-        at <interactive>:2035:1-6
+        at <interactive>:2327:1-6
     • In the first argument of ‘read’, namely ‘4’
       In the expression: read 4
       In an equation for ‘it’: it = read 4
@@ -441,7 +441,7 @@ read 4
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgb913419}]{Type specification}
+\begin{frame}[fragile,label={sec:orgd8972ab}]{Type specification}
  \begin{block}{We can specify a type}
 \begin{itemize}
 \item We just add '::<Type>' and read will work
@@ -465,7 +465,7 @@ read "(3,'a')" :: (Int, Char)
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org933f333}]{Enum type class}
+\begin{frame}[fragile,label={sec:org41be4d2}]{Enum type class}
  \begin{block}{Sequentially ordered types}
 \begin{itemize}
 \item Being \emph{sequentialy ordered} means that they can be counted in order
@@ -493,7 +493,7 @@ abcde
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org131343c}]{Bounded Type class}
+\begin{frame}[fragile,label={sec:org405c526}]{Bounded Type class}
  \begin{block}{Bounded type class has concrete types}
 \begin{itemize}
 \item with maximum and minimum elements
@@ -521,7 +521,7 @@ False
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org52b4c22}]{Numeric Types}
+\begin{frame}[fragile,label={sec:org34ee6a4}]{Numeric Types}
  \begin{block}{Numeric types can be operated on mathematically}
 \begin{itemize}
 \item Let's look at this type
@@ -535,7 +535,7 @@ i==i
 
 \begin{verbatim}
 (*) :: Num a => a -> a -> a
-<interactive>:2058:15: error:
+<interactive>:2350:15: error:
     • Couldn't match expected type ‘Int’ with actual type ‘Integer’
     • In the second argument of ‘(*)’, namely ‘(6 :: Integer)’
       In the expression: (5 :: Int) * (6 :: Integer)
@@ -545,7 +545,7 @@ i==i
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org720dcb1}]{Integral and Floating types}
+\begin{frame}[fragile,label={sec:org729c9c8}]{Integral and Floating types}
  \begin{block}{Integral and Floating types}
 \begin{itemize}
 \item The Integral typeclass only includes Integer and Int
@@ -565,7 +565,7 @@ fromIntegral :: (Num b, Integral a) => a -> b
 \end{frame}
 
 
-\begin{frame}[fragile,label={sec:org3c478b1}]{Curried Functions}
+\begin{frame}[fragile,label={sec:org791ccad}]{Curried Functions}
  \begin{block}{Every function in haskell only takes one argument}
 \begin{itemize}
 \item But what about  'max' or min?
@@ -597,7 +597,7 @@ Prelude Control.Applicative> Prelude Control.Applicative> Prelude Control.Applic
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org6a23767}]{Curried comparison}
+\begin{frame}[fragile,label={sec:orgfb11fa3}]{Curried comparison}
  \begin{block}{Here is a curried comparison}
 \begin{itemize}
 \item These are the same because 'x' is on both sides of the equation
@@ -612,7 +612,7 @@ compareWithHundred1 = compare 100
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org48ecbb3}]{Example partial application}
+\begin{frame}[fragile,label={sec:orgfd64a4d}]{Example partial application}
  \begin{block}{Let's look at an infix function}
 \begin{itemize}
 \item simply surround the function with parentheses and only supply one of
@@ -626,7 +626,7 @@ divideByTen = (/10)
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgdd88770}]{partial application of a string function}
+\begin{frame}[fragile,label={sec:org975fc72}]{partial application of a string function}
  \begin{block}{String functions can be partially applied too}
 \begin{itemize}
 \item this is written in point free style
@@ -640,7 +640,7 @@ isUpperAlphanum = (`elem` ['A'..'Z'])
 \end{frame}
 
 
-\begin{frame}[fragile,label={sec:org603b216}]{Returned functions}
+\begin{frame}[fragile,label={sec:orgdff85db}]{Returned functions}
  \begin{block}{Functions can return functions}
 \begin{itemize}
 \item take a function and apply it twice
@@ -652,7 +652,7 @@ applyTwice f x = f (f x)
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org54c16f8}]{ZipWith}
+\begin{frame}[fragile,label={sec:org4f101ee}]{ZipWith}
  \begin{block}{We are going to implement ZipWith}
 \begin{itemize}
 \item It joins two lists and performs a function on the corresponding elements
@@ -666,7 +666,7 @@ zipWith' f (x:xs) (y:ys) = f x y : zipWith' f xs ys
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgc68ea92}]{flip}
+\begin{frame}[fragile,label={sec:org05453c1}]{flip}
  \begin{block}{flip changes the order of the arguements}
 \begin{verbatim}
 -- flip' :: (a -> b -> c) -> (b -> a -> c)
@@ -679,7 +679,7 @@ flip'' f y x = f x y
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org20a1e9c}]{Maps and Filters}
+\begin{frame}[fragile,label={sec:orgced0ebc}]{Maps and Filters}
  \begin{block}{Map}
 \begin{itemize}
 \item map takes a function applies the function to each element of a list
@@ -692,7 +692,7 @@ map f (x:xs) = f x : map f xs
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orga18c3b3}]{Filter}
+\begin{frame}[fragile,label={sec:org2c3db7f}]{Filter}
  \begin{block}{Filter}
 \begin{itemize}
 \item 'filter' take a function called a predicate and a list of any type
@@ -711,7 +711,7 @@ filter p (x:xs)
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:orga23ea31}]{Lambdas}
+\begin{frame}[label={sec:orgc694baa}]{Lambdas}
 \begin{block}{Lamdas are anonymous functions}
 \begin{itemize}
 \item These are unnamed functions
@@ -722,13 +722,13 @@ filter p (x:xs)
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:org9a33b75}]{Church and Turing}
+\begin{frame}[label={sec:org93e2729}]{Church and Turing}
 \begin{center}
 \includegraphics[width=.9\linewidth]{images/computability.jpg}
 \end{center}
 \end{frame}
 
-\begin{frame}[label={sec:org8503b8e}]{Lambda Calculus}
+\begin{frame}[label={sec:org03eeb7c}]{Lambda Calculus}
 \begin{block}{Lambda Calculus is a formal system for computation}
 \begin{itemize}
 \item it is equivelent to calculation by Turing Machine
@@ -744,7 +744,7 @@ filter p (x:xs)
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[fragile,label={sec:org5b38b67}]{Example of a lambda}
+\begin{frame}[fragile,label={sec:org73ab9f1}]{Example of a lambda}
  \begin{block}{We can pass a lambda to ZipWith}
 \begin{itemize}
 \item a lambda function in Haskell starts with '$\backslash$'
@@ -757,7 +757,7 @@ zipWith (\a b -> (a * 30 + 3) / b) [5,4,3,2,1] [1,2,3,4,5]
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orga8ac5a2}]{Quicksort}
+\begin{frame}[fragile,label={sec:org87c1bc1}]{Quicksort}
  \begin{block}{specification}
 \begin{verbatim}
 -- quicksort :: (Ord a) => [a] -> [a]  
@@ -770,7 +770,7 @@ quicksort (x:xs) =
 \end{verbatim}
 \end{block}
 \end{frame}
-\begin{frame}[fragile,label={sec:orge244227}]{Folds}
+\begin{frame}[fragile,label={sec:orgfd12325}]{Folds}
  \begin{block}{Folds encapsulate several functions with (x:xs) patterns}
 \begin{itemize}
 \item they reduce a list to a single value
@@ -787,7 +787,7 @@ sum'' = foldl (+) 0
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgc71d945}]{Function application}
+\begin{frame}[fragile,label={sec:org0147a91}]{Function application}
  \begin{block}{Function application with \$}
 \begin{itemize}
 \item '\$' is called the \emph{function application}
@@ -801,12 +801,12 @@ map ($ 3) [(4+), (10*), (^2), sqrt]
 \end{verbatim}
 
 \begin{verbatim}
-[7.0,30.0,9.0,1.7320508075688772*** Exception: <interactive>:2102:1-29: Non-exhaustive patterns in function map
+[7.0,30.0,9.0,1.7320508075688772*** Exception: <interactive>:2394:1-29: Non-exhaustive patterns in function map
 \end{verbatim}
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org46e4f88}]{Function composition}
+\begin{frame}[fragile,label={sec:org6498a44}]{Function composition}
  \begin{block}{Function composition is just like math}
 \begin{itemize}
 \item In math  \(f \centerdot g(x) = f(g(x))\)
@@ -825,7 +825,7 @@ f . g = \x -> f (g x)
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org4c0be89}]{Function composition examples}
+\begin{frame}[fragile,label={sec:org7ab8db7}]{Function composition examples}
  \begin{block}{Function composition examples}
 \begin{itemize}
 \item with a \(\lambda\)
@@ -837,14 +837,14 @@ map (negate . abs) [5,-3,-6,7,-3,2,-19,24]
 \end{verbatim}
 
 \begin{verbatim}
-[-5,-3,-6,-7,-3,-2,-19,-24*** Exception: <interactive>:2102:1-29: Non-exhaustive patterns in function map
+[-5,-3,-6,-7,-3,-2,-19,-24*** Exception: <interactive>:2394:1-29: Non-exhaustive patterns in function map
 \end{verbatim}
 \end{block}
 \end{frame}
 
 \section{Functors, Applicative Functors and Monoids}
-\label{sec:org11ee899}
-\begin{frame}[label={sec:org9406db1}]{Polymorphism on a higher level}
+\label{sec:org045cc1b}
+\begin{frame}[label={sec:org01665b8}]{Polymorphism on a higher level}
 \begin{itemize}
 \item Types are not part of a hierarchy
 \item We can think about how they should act
@@ -854,7 +854,7 @@ map (negate . abs) [5,-3,-6,7,-3,2,-19,24]
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:org9c1ab8c}]{Functors defined}
+\begin{frame}[label={sec:orgdc0e7a4}]{Functors defined}
 \begin{columns}
 \begin{column}{.48\columnwidth}
 \begin{definition}[definition]
@@ -877,7 +877,7 @@ A functor is a typeclass for all the things that can be mapped over
 \end{frame}
 
 
-\begin{frame}[fragile,label={sec:org83c6361}]{Analogy with other typeclasses}
+\begin{frame}[fragile,label={sec:org0d9148a}]{Analogy with other typeclasses}
  \begin{block}{Typeclasses define functions}
 \begin{itemize}
 \item Eq \emph{defines} concrete types that are equatable
@@ -896,7 +896,7 @@ A functor is a typeclass for all the things that can be mapped over
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:org987fbd8}]{List Functor examples}
+\begin{frame}[label={sec:org7e2fb16}]{List Functor examples}
 \begin{example}[List Functor Examples]
 \begin{itemize}
 \item map:: (a -> b)  -> [a] -> [b]
@@ -909,7 +909,7 @@ A functor is a typeclass for all the things that can be mapped over
 \end{frame}
 
 
-\begin{frame}[fragile,label={sec:orgcfa847a}]{Functor code in the repl}
+\begin{frame}[fragile,label={sec:orgeb6728d}]{Functor code in the repl}
  \begin{block}{List Functor in the repl}
 \begin{verbatim}
   :t map
@@ -921,12 +921,12 @@ i==i
 \begin{verbatim}
 map :: (t -> a) -> [t] -> [a]
 [2,4,6]
-[2,4,6*** Exception: <interactive>:2102:1-29: Non-exhaustive patterns in function map
+[2,4,6*** Exception: <interactive>:2394:1-29: Non-exhaustive patterns in function map
 \end{verbatim}
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org616b8e4}]{Maybe Functor examples}
+\begin{frame}[fragile,label={sec:org29871be}]{Maybe Functor examples}
  \begin{example}[Maybe Functor Examples]
 \begin{verbatim}
 type myMaybe a = Nothing | Just a 
@@ -937,7 +937,7 @@ instance Functor myMaybe where
 \end{verbatim}
 \end{example}
 \end{frame}
-\begin{frame}[fragile,label={sec:orgcdff65b}]{Maybe Functor code in the repl}
+\begin{frame}[fragile,label={sec:org150e448}]{Maybe Functor code in the repl}
  \begin{block}{Maybe Functor in the repl}
 \begin{verbatim}
 :t fmap
@@ -961,8 +961,8 @@ Nothing
 
 
 \section{Functor Laws}
-\label{sec:orgc2e2920}
-\begin{frame}[label={sec:org5c04137}]{Functor Law intuition}
+\label{sec:orgdd55417}
+\begin{frame}[label={sec:org3a5933c}]{Functor Law intuition}
 \begin{block}{If functors mean that something can be mapped over\ldots{}}
 \begin{itemize}
 \item then calling 'fmap' on a functor should
@@ -977,7 +977,7 @@ Nothing
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:org0435ab9}]{The First Functor Laws}
+\begin{frame}[label={sec:orgf2e4a5d}]{The First Functor Laws}
 \begin{definition}[The First Functor Law]
 states that if we map the identity (id) function over a functor, we
 get the functor
@@ -987,7 +987,7 @@ get the functor
 \end{definition}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org6a786b9}]{Identity in the Repl}
+\begin{frame}[fragile,label={sec:org421eaf9}]{Identity in the Repl}
  \begin{block}{Identity functions in the repl}
 \begin{verbatim}
 fmap id (Just 3)
@@ -1010,7 +1010,7 @@ Nothing
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:orga440f0d}]{The Second Functor Law}
+\begin{frame}[label={sec:org19db90a}]{The Second Functor Law}
 \begin{definition}[The Second Functor Law says]
 The Second Functor Law says that composing two functions and then
 mapping the composed function over a functor is the same as first
@@ -1022,7 +1022,7 @@ mapping one function over the functor and then mapping the other one.
 \end{definition}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgc2d7beb}]{Composition in the Repl}
+\begin{frame}[fragile,label={sec:org2565e11}]{Composition in the Repl}
  \begin{block}{Composition functions in the repl}
 \begin{verbatim}
 fmap ((+1).(*2)) (Just 3)
@@ -1042,8 +1042,8 @@ Just 7
 \end{frame}
 
 \section{Applicative functors}
-\label{sec:org105dd5f}
-\begin{frame}[fragile,label={sec:org34194ee}]{What if we map a multi-parameter function over a functor?}
+\label{sec:org6141b3a}
+\begin{frame}[fragile,label={sec:org3128387}]{What if we map a multi-parameter function over a functor?}
  \begin{itemize}
 \item Look at the type signature
 \end{itemize}
@@ -1061,7 +1061,7 @@ a :: (Num a, Enum a) => [a -> a]
 \end{verbatim}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org3bdac8f}]{What if we want to take a function out of a Just}
+\begin{frame}[fragile,label={sec:org399a855}]{What if we want to take a function out of a Just}
  \begin{block}{Let's take a Just (3 *) and map}
 and map it over Just 5
 \begin{verbatim}
@@ -1075,7 +1075,7 @@ class (Functor f) => Applicative f where
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgbb7db02}]{Maybe Applicative}
+\begin{frame}[fragile,label={sec:org537a7aa}]{Maybe Applicative}
  \begin{block}{Let's look at the Applicative for Maybe}
 \begin{verbatim}
 :set +m
@@ -1089,7 +1089,7 @@ instance Applicative MyMaybe where
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org0c2e8f2}]{Maybe Applicative inside the repl}
+\begin{frame}[fragile,label={sec:org2ac5985}]{Maybe Applicative inside the repl}
  \begin{block}{Using the Maybe Applicative}
 \begin{verbatim}
 -- :add Control.Applicative
@@ -1103,32 +1103,32 @@ Nothing <*> Just "woot"
 
 \begin{verbatim}
 
-<interactive>:2184:1: error:
+<interactive>:2476:1: error:
     • Could not deduce (Applicative Maybe) arising from a use of ‘<*>’
       from the context: Num b
         bound by the inferred type of it :: Num b => Maybe b
-        at <interactive>:2184:1-20
+        at <interactive>:2476:1-20
     • In the expression: Just (+ 3) <*> Just 9
       In an equation for ‘it’: it = Just (+ 3) <*> Just 9
-<interactive>:2185:1: error:
+<interactive>:2477:1: error:
     • Could not deduce (Applicative Maybe) arising from a use of ‘<*>’
       from the context: Num b
         bound by the inferred type of it :: Num b => Maybe b
-        at <interactive>:2185:1-21
+        at <interactive>:2477:1-21
     • In the expression: pure (* 2) <*> Just 10
       In an equation for ‘it’: it = pure (* 2) <*> Just 10
-<interactive>:2186:1: error:
+<interactive>:2478:1: error:
     • Could not deduce (Applicative Maybe) arising from a use of ‘<*>’
       from the context: Num b
         bound by the inferred type of it :: Num b => Maybe b
-        at <interactive>:2186:1-20
+        at <interactive>:2478:1-20
     • In the expression: pure (+ 3) <*> Just 9
       In an equation for ‘it’: it = pure (+ 3) <*> Just 9
-<interactive>:2187:1: error:
+<interactive>:2479:1: error:
     • No instance for (Applicative Maybe) arising from a use of ‘<*>’
     • In the expression: Just (++ "!!") <*> Just "Go now"
       In an equation for ‘it’: it = Just (++ "!!") <*> Just "Go now"
-<interactive>:2188:1: error:
+<interactive>:2480:1: error:
     • No instance for (Applicative Maybe) arising from a use of ‘<*>’
     • In the expression: Nothing <*> Just "woot"
       In an equation for ‘it’: it = Nothing <*> Just "woot"
@@ -1137,7 +1137,7 @@ Nothing <*> Just "woot"
 \end{frame}
 
 
-\begin{frame}[fragile,label={sec:org03e9f39}]{Fmap as an infix operator}
+\begin{frame}[fragile,label={sec:orgcf867bf}]{Fmap as an infix operator}
  \begin{block}{Control.Applicative exports a function called <\$>}
 which is fmap as an infix operator
 \begin{verbatim}
@@ -1147,7 +1147,7 @@ f <$> x = fmap f x
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org527a5d3}]{Compare Applicatives in the repl}
+\begin{frame}[fragile,label={sec:orgf537aa7}]{Compare Applicatives in the repl}
  \begin{block}{Infix fmap in the repl}
 \begin{verbatim}
 (++) <$> Just "John " <*> Just "Travolta"
@@ -1156,7 +1156,7 @@ f <$> x = fmap f x
 \end{verbatim}
 
 \begin{verbatim}
-<interactive>:2194:1: error:
+<interactive>:2486:1: error:
     • No instance for (Applicative Maybe) arising from a use of ‘<*>’
     • In the expression: (++) <$> Just "John " <*> Just "Travolta"
       In an equation for ‘it’:
@@ -1166,7 +1166,7 @@ John Travolta
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org4fe792f}]{Lists are Applicative Functors}
+\begin{frame}[fragile,label={sec:org585440b}]{Lists are Applicative Functors}
  \begin{definition}[Definition of the Applicative for a list]
 \begin{itemize}
 \item Literally a Cartesian product of functions and list values
@@ -1182,7 +1182,7 @@ instance Applicative [] where
 \end{definition}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org6d8cc89}]{Applicative Functors of lists in the repl}
+\begin{frame}[fragile,label={sec:org87c8ddc}]{Applicative Functors of lists in the repl}
  \begin{block}{Applicative Functors of lists in the repl}
 \begin{verbatim}
 [(*0),(+100),(^2)] <*> [1..4]
@@ -1199,7 +1199,7 @@ instance Applicative [] where
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgf35be05}]{IO is an Applicative}
+\begin{frame}[fragile,label={sec:org639de2e}]{IO is an Applicative}
  \begin{block}{Let's see how the IO Applicative is implemented:}
 \begin{verbatim}
 :set +m
@@ -1215,7 +1215,7 @@ instance Applicative IO where
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org189d07e}]{Concatenating IO strings}
+\begin{frame}[fragile,label={sec:org2f066b5}]{Concatenating IO strings}
  \begin{columns}
 \begin{column}{.48\columnwidth}
 \begin{block}{Two ways to concatenate two lines of user input string}
@@ -1254,7 +1254,7 @@ myAction = (++)
 \end{columns}
 \end{frame}
 
-\begin{frame}[label={sec:org8cee5e2}]{The first Applicative Functor Law}
+\begin{frame}[label={sec:org82348e4}]{The first Applicative Functor Law}
 \begin{theorem}[The first Applicative Functor Law]
 \begin{itemize}
 \item pure f <*> x = fmap f x
@@ -1264,8 +1264,8 @@ myAction = (++)
 
 
 \section{The newtype keyword}
-\label{sec:orgd1adea0}
-\begin{frame}[label={sec:org68de1ad}]{Some lessons we've skipped}
+\label{sec:orgb3ff708}
+\begin{frame}[label={sec:orgc10b843}]{Some lessons we've skipped}
 \begin{block}{Defining types}
 \begin{itemize}
 \item \emph{data} will define a new algebraic type
@@ -1275,7 +1275,7 @@ myAction = (++)
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgea5666d}]{Applicative Functor in two ways}
+\begin{frame}[fragile,label={sec:org9b4aac9}]{Applicative Functor in two ways}
  \begin{columns}
 \begin{column}{.48\columnwidth}
 \begin{block}{function left, each argument right}
@@ -1319,7 +1319,7 @@ Prelude Control.Applicative| Prelude Control.Applicative| Prelude Control.Applic
 
 
 
-\begin{frame}[fragile,label={sec:org0541dbd}]{The newtype keyword}
+\begin{frame}[fragile,label={sec:orgb0dd56a}]{The newtype keyword}
  \begin{block}{'newtype' takes one type and wrap it}
 \begin{itemize}
 \item to present it as another type
@@ -1330,7 +1330,7 @@ Prelude Control.Applicative| Prelude Control.Applicative| Prelude Control.Applic
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[fragile,label={sec:org2bc71fe}]{type vs. newtype vs. data examples}
+\begin{frame}[fragile,label={sec:orga458e21}]{type vs. newtype vs. data examples}
  \begin{block}{'data' to make new types}
 \begin{itemize}
 \item Here are additive and multiplicative types with multiple constructors
@@ -1343,7 +1343,7 @@ data PlayerCharacter = PlayerCharacter Species Profession
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orge282b3c}]{Using newtype to drive typeclass properties}
+\begin{frame}[fragile,label={sec:org56db37b}]{Using newtype to drive typeclass properties}
  \begin{block}{newtype}
 \begin{verbatim}
 newtype CharList = CharList {getCharList :: [Char]} deriving(Eq,Show)
@@ -1364,8 +1364,8 @@ False
 
 
 \section{Monoids}
-\label{sec:orgd271da9}
-\begin{frame}[fragile,label={sec:orgb039131}]{Monoid Definition}
+\label{sec:org2d0884c}
+\begin{frame}[fragile,label={sec:orga1e3a60}]{Monoid Definition}
  \begin{definition}[Monoid definition]
 A data type, category or set is a \alert{monoid} if it has a binary
 operation \textbullet{} which is associative and has an identity.
@@ -1387,7 +1387,7 @@ class Monoid m where
 \end{definition}
 \end{frame}
 
-\begin{frame}[label={sec:org0e5efff}]{Monoid functions defined}
+\begin{frame}[label={sec:org5dea61c}]{Monoid functions defined}
 \begin{block}{Defining the monoid functions}
 \begin{itemize}
 \item 'mempty' is just the identity function
@@ -1401,7 +1401,7 @@ applying mappend
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:org516b46c}]{Monoid Laws}
+\begin{frame}[label={sec:org5b3bf14}]{Monoid Laws}
 \begin{theorem}[The Monoid Laws are just the definition in Haskell]
 \begin{itemize}
 \item mappend mempty x = x
@@ -1411,8 +1411,8 @@ applying mappend
 \end{theorem}
 \end{frame}
 \section{Lists are monoids}
-\label{sec:orgaf2add5}
-\begin{frame}[label={sec:org9ec18ac}]{Monoid examples}
+\label{sec:org86c4e64}
+\begin{frame}[label={sec:orga3c4640}]{Monoid examples}
 \begin{example}[List is a monoid]
 \begin{itemize}
 \item\relax [] with (++) is a monoid
@@ -1432,7 +1432,7 @@ applying mappend
 \end{frame}
 
 
-\begin{frame}[label={sec:org175b40c}]{Why is all of this important to you}
+\begin{frame}[label={sec:orgca74cc7}]{Why is all of this important to you}
 \begin{itemize}
 \item \href{https://www.bls.gov/ooh/computer-and-information-technology/mobile/software-developers.htm}{BLS Statistics}
 \item 2015 median salary is \$100,690
@@ -1441,7 +1441,7 @@ applying mappend
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:org8c22703}]{From NY State Comptroller's office}
+\begin{frame}[label={sec:org7743feb}]{From NY State Comptroller's office}
 \begin{itemize}
 \item \href{https://www.bls.gov/ooh/computer-and-information-technology/mobile/software-developers.htm}{The Technology Sector in New York City 4/2018}
 \item New York State had the third-largest tech sector in the nation
@@ -1453,13 +1453,13 @@ private sector to reach a record \$147,300 by 2016
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:orga1ab4ac}]{}
+\begin{frame}[label={sec:org3e31d31}]{}
 \begin{center}
 \includegraphics[width=.9\linewidth]{./images/salaryVgraduation.png}
 \end{center}
 \end{frame}
 
-\begin{frame}[label={sec:org4ed96f1}]{NYC Demographics}
+\begin{frame}[label={sec:org86bc3fa}]{NYC Demographics}
 \begin{quote}
 In New York City, 44.6\% of the population is white, 25.1\% is black, and
 11.8\% are of Asian descent. Hispanics of any race represent about
@@ -1470,7 +1470,7 @@ In New York City, 44.6\% of the population is white, 25.1\% is black, and
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:org9e6a51a}]{NYC Tech Sector does not reflect our diversity}
+\begin{frame}[label={sec:orged04f44}]{NYC Tech Sector does not reflect our diversity}
 \begin{quote}
 [B]lacks and Latinos constitute 25.1 percent and 27.5 percent of the
 population, respectively, but only 9 percent and 11 percent,
@@ -1481,7 +1481,7 @@ respectively, are employed in the tech sector.
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:org7d51512}]{}
+\begin{frame}[label={sec:orge545a99}]{}
 \begin{center}
 \includegraphics[width=.9\linewidth]{./images/salaryDist.png}
 \end{center}
@@ -1501,7 +1501,7 @@ respectively, are employed in the tech sector.
 
 
 
-\begin{frame}[label={sec:org44261b2}]{Reverences}
+\begin{frame}[label={sec:org20ac247}]{References}
 \begin{itemize}
 \item \href{http://www2.cuny.edu/wp-content/uploads/sites/4/page-assets/about/administration/offices/oira/institutional/surveys/SES\_Presentation\_EMC\_accessible.pdf}{CUNY Student Experience 2016}
 \item \href{https://techcrunch.com/2015/08/20/new-york-citys-tech-industry-is-62-percent-white-60-percent-male/}{NYC Tech is 62\% White, 60\% male}
@@ -1512,6 +1512,8 @@ respectively, are employed in the tech sector.
 \item \href{https://www.osc.state.ny.us/osdc/rpt4-2018.pdf}{The Technology Sector in New York City}
 \item \href{http://worldpopulationreview.com/us-cities/new-york-city-population/}{NYC Population}
 \item \href{http://www1.nyc.gov/office-of-the-mayor/news/677-17/de-blasio-administration-new-initiative-double-number-graduates-tech}{CUNY 2x Initiative}
+\item \href{https://sites.google.com/a/lclark.edu/drake/courses/pls}{Peter Drake's Prog Lang Course Materials}
+\item \url{http://learnyouahaskell.com/}
 \end{itemize}
 \end{frame}
 \end{document}

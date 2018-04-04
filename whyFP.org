@@ -1320,7 +1320,7 @@ respectively, are employed in the tech sector.
 
 
 
-** Reverences                                                       :B_frame:
+** References                                                       :B_frame:
    :PROPERTIES:
    :BEAMER_env: frame
    :END:
@@ -1333,3 +1333,5 @@ respectively, are employed in the tech sector.
 - [[https://www.osc.state.ny.us/osdc/rpt4-2018.pdf][The Technology Sector in New York City]]
 - [[http://worldpopulationreview.com/us-cities/new-york-city-population/][NYC Population]]
 - [[http://www1.nyc.gov/office-of-the-mayor/news/677-17/de-blasio-administration-new-initiative-double-number-graduates-tech][CUNY 2x Initiative]]
+- [[https://sites.google.com/a/lclark.edu/drake/courses/pls][Peter Drake's Prog Lang Course Materials]]
+- http://learnyouahaskell.com/
