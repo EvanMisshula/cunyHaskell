@@ -1,0 +1,11 @@
+* Presentation on teaching Functional Programming to CUNY Undergraduates
+
+The repo contains the materials used for my presentation.  The pdf was created using
+org-mode.  To recreate the pdf, after downloading the repo:
+
+1. Find the initialize.org file.  This file contains code for emacs to
+   run code in Haskell. Place the cursor between begin and end of source and press
+   C-c C-c.
+2. Find whyFP.org.  Use the key chord C-c C-e to export.  This creates WhyFP.tex.
+3. Find WhyFP.tex.  Press the lion to generate the pdf. Press a second
+   time to correct references.  Press the eyeglasses to see the pdf.

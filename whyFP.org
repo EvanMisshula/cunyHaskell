@@ -1,0 +1,1335 @@
+#+Title: Why teaching functional programming to undergraduates at CUNY is important
+#+Author: Evan Misshula
+#+Email: emisshula@jjay.cuny.edu
+#+Date: 2018-03-28
+
+#+OPTIONS: H:2 toc:nil num:t
+#+TAGS:       Write(w) Update(u) Fix(f) Check(c) noexport(n) export(e)
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+LANGUAGE:  en
+#+STARTUP: beamer
+#+EXPORT_SELECT_TAGS: export(e)
+#+EXPORT_EXCLUDE_TAGS: noexport(n)
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [presetation]
+#+BEAMER_THEME: Madrid
+#+COLUMNS: %45ITEM %10BEAMER_ENV(Env) %10BEAMER_ACT(Act) %4BEAMER_COL(Col) %8BEAMER_OPT(Opt)
+
+** Plan for the talk                                                :B_frame:
+   :PROPERTIES:
+   :BEAMER_env: frame
+   :END:
+1. Why Functional Programming is intellectually interesting
+\pause   
+(particularly with Haskell)
+\pause
+2. The size and growth of the Tech sector in NYC
+3. The size, growth and earnings of CUNY CS grads
+4. The demographic biasis of the Tech Industry relative to NYC Population
+5. My thoughts on how helping to close this gap can benefit you and
+   your employer
+
+
+** First computers were imperative by necessity                     :B_frame:
+   :PROPERTIES:
+   :BEAMER_env: frame
+   :END:
+#+ATTR_LATEX: :width .9\linewidth
+[[./images/machineCode.png]]
+
+** Programming languages help us think                              :B_frame:
+   :PROPERTIES:
+   :BEAMER_env: frame
+   :END:
+#+ATTR_LATEX: :width .9\linewidth
+[[./images/lang.jpeg]]
+
+** Languages encourage patterns of thought                          :B_frame:
+   :PROPERTIES:
+   :BEAMER_env: frame
+   :END:
+#+ATTR_LATEX: :width .9\linewidth
+[[./images/papert.jpeg]]
+
+** There are dissenting opinions                                    :B_frame:
+   :PROPERTIES:
+   :BEAMER_env: frame
+   :END:
+#+ATTR__LATEX: :width .6\linewidth
+[[./images/noVal.jpg]]
+- Vsevolod Dyomkin [[https://www.slideshare.net/vseloved/can-functional-programming-be-liberated-from-static-typing][published October 31, 2015]]
+
+
+** Counterexamples of good languages
+   :PROPERTIES:
+   :BEAMER_env: frame
+   :END:
+#+ATTR_LATEX: :width .6\linewidth
+[[./images/bashHorror.jpeg]]
+\pause
+- actually the slide is wrong
+\pause
+- comparison should be ~[[~
+
+
+** You can't talk about poor language design and not mention JS     :B_frame:
+   :PROPERTIES:
+   :BEAMER_env: frame
+   :END:
+#+BEGIN_SRC js :cmd "babel-node --presets es2015" :exports code
+console.log(0.1 + 0.2);
+console.log(0.1 + 0.2 == 0.3);
+#+END_SRC
+\pause
+- 0.30000000000000004
+- false
+
+
+
+** Comparisons can fail                                             :B_block:
+   :PROPERTIES:
+   :BEAMER_env: frame
+   :END:
+#+BEGIN_SRC js :cmd "babel-node --presets es2015" :exports code
+console.log(1 < 2 < 3);
+console.log(3 > 2 > 1);
+#+END_SRC
+\pause
+- true (1<2) -> true is implicitly coerced to 1 and 1<3
+- false (3>2) -> true coerced to 1 and and 1>1 is false
+
+** Even assignment is perilous                                      :B_block:
+   :PROPERTIES:
+   :BEAMER_env: frame
+   :END:
+#+BEGIN_SRC js :cmd "babel-node --presets es2015" :exports code
+var a= [1,2,3];
+a[10]=99;
+console.log(a[10])
+console.log(a[6])
+#+END_SRC
+\pause
+- 99
+- [1, 2, 3, <7 empty items>, 99]
+
+** Yet Haskell allows us to                                         :B_frame:
+   :PROPERTIES:
+   :BEAMER_env: frame
+   :END:
+\pause
+- Explore recursion both in functions and in data structures
+\pause
+- Rewrite classic sort algorithms in breathtakingly simple form
+\pause
+- Introduce students to algebraic ideas on functions so that they can
+  master abstraction
+
+** Right triangle problem
+*** Let's find a problem that puts constraints on tuples	    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- Which right triangle that has integers for all sides and all sides
+  equal to or smaller than 10 has a perimeter of 24?
+\pause 
+- crack the problem like an egg
+\pause
+- Opportunity to teach: *solution by problem relaxation*
+** Right triangle problem relax solution
+*** Integer sides all < 10 and perimeter = 24                       :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- generate all tuples of sides less than 10
+\pause
+- designate z as the hypotenuse (bigger than x and y) 
+\pause
+- make \(x^2 + y^2 = z^2 \)
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output
+    :set +m
+    length([(x,y,z) | x<-[1..10],y<-[1..10],
+            z<-[1..10],y<z,x<z,
+            (x^2 + y^2 == z^2)])
+    i==i
+#+End_src
+
+#+RESULTS:
+: 
+: Prelude| Prelude| 4
+
+
+** Adding the perimeter constraint 
+*** Let's add constraints 					    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- the perimeter equal 24
+- \(a + b + c = 24 \)
+
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output
+  :set +m
+
+  length([(x,y,z) | x<-[1..10],y<-[1..10],z<-[1..10],
+          y<z,
+          x+y+z==24,
+          (x^2 + y^2 == z^2)])
+  [(x,y,z) | x<-[1..10],y<-[1..10],z<-[1..10],y<z,
+    x+y+z==24,
+    (x^2 + y^2 == z^2)]
+  i==i
+#+End_src
+
+** Type system
+*** Haskell is statically typed					    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- Haskell allows students inquire about the type
+  - We can see that type by using the ':t' command in the repl:
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output
+   :t 'a'
+   :t True
+   :t "HELLO!"
+   :t (True, 'a')
+   :t 4 == 5
+  1==1
+#+End_src
+
+#+RESULTS:
+: 'a' :: Char
+: True :: Bool
+: "HELLO!" :: [Char]
+: (True, 'a') :: (Bool, Char)
+: 4 == 5 :: Bool
+
+*** Haskell has functions that work on different types              :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+\pause
+- These are polymorphic functions
+  - examples
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output
+  head [1,2,3]
+  head "Evan"
+  fst ("Evan","Misshula")
+  snd (1,3)
+  1==1
+#+End_src
+
+#+RESULTS:
+: 1
+: 'E'
+: Evan
+: 3
+
+** Decompose the typeclass
+***  (==) :: Eq a => a -> a -> Bool				    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- Typeclass constraint 
+  - The declaration we can read says:
+\pause     
+  - The equality function takes two variables of the same type and returns a Bool
+\pause 
+  - The new part 'Eq a =>' says:
+  - The type must be part of Eq typeclass
+    - This is called the class constraint
+** Interface of Eq
+*** The Eq typeclass provides an interface for testing for equality   :block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- Eq is used for types that support equality testing
+  - Its members implement both:
+    - '=='
+    - '/='
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output
+5==5
+5/=5
+'a' == 'a'
+"Ho Ha" == "Ho Ha"
+3.4 == 3.4
+  1==1
+#+End_src
+
+#+RESULTS:
+: True
+: False
+: True
+: True
+: True
+
+
+** Introducing Ord typeclass
+*** Ord is for types that have an ordering 			    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- We can see the type of '>' comparison
+- We can see some functions which rely on being in the ord typeclass
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output
+:t (>)
+"Abc"< "Zev"
+compare "Abc" "Zev"
+5 >= 2
+compare 5 3
+1==1
+#+End_src
+
+#+RESULTS:
+: (>) :: Ord a => a -> a -> Bool
+: True
+: LT
+: True
+: GT
+
+
+** Ord has a connection with inference
+*** Ord is important in statistics                                  :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- Ord can be used to explain: *ordinal levels of measurement*
+\pause
+- Ord can also be used to introduce: *utility curves*
+
+
+** Introducing Show typeclass
+*** Everything except function has been part of show 		    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- It works like Java or Ruby's toString methods
+- Mostly we use it to examine a value
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output
+show 3
+show 5.334
+show True
+1==1
+#+End_src
+
+
+** Introducing Read typeclass
+*** Read is the inverse of show 				    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- It works reads a string and returns a type which supports the interface Read
+\pause
+- You can use it to create Javascript like craziness
+\pause
+  - *But you have to work at it*
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output
+read "True" || False                          
+read "8.2" + 3.8                                    
+read "5" - 2         
+read "[1,2,3,4]" ++ [3]
+1==1
+#+End_src
+
+#+RESULTS:
+: True
+: 12.0
+: 3
+: [1,2,3,4,3]
+
+** Limits to the type inference system
+*** Let's look at a type error					    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output
+read 4
+1==1
+#+End_src
+
+#+RESULTS:
+: <interactive>:238:6:
+:     No instance for (Num String) arising from the literal `4'
+:     Possible fix: add an instance declaration for (Num String)
+:     In the first argument of `read', namely `4'
+:     In the expression: read 4
+:     In an equation for `it': it = read 4
+
+- GHCI is saying it does not know what type to return
+  - Do you want an Float or an Integer?
+
+** Type specification
+*** We can specify a type					    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- We just add '::<Type>' and read will work
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output
+read "5" :: Int
+read "5" :: Float
+(read "5" :: Int) * 4
+read "[1,2,3,4]" :: [Int]
+read "(3,'a')" :: (Int, Char)
+1==1
+#+End_src
+
+#+RESULTS:
+: 5
+: 5.0
+: 20
+: [1,2,3,4]
+: (3,'a')
+
+** Enum type class
+*** Sequentially ordered types					    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- Being /sequentialy ordered/ means that they can be counted in order
+- This property is also called being /enumerable/
+- We can use them in list ranges
+  - they each have a predecessor which you can get with 'pred'
+  - they each have a successor which you can get with 'succ'
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output
+['a'..'e']
+[LT .. GT]
+[3..7]
+succ 'B'
+1==1
+#+End_src
+
+#+RESULTS:
+: abcde
+: [LT,EQ,GT]
+: [3,4,5,6,7]
+: 'C'
+
+** Bounded Type class
+*** Bounded type class has concrete types			    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- with maximum and minimum elements
+  - minBound and maxBound are functions with polymorphic type
+    - (Bounded a) => a
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output
+minBound :: Int
+maxBound :: Char
+maxBound :: Bool
+minBound :: Bool
+i==i
+#+End_src
+
+#+RESULTS:
+: -9223372036854775808
+: '\1114111'
+: True
+: False
+
+** Numeric Types
+*** Numeric types can be operated on mathematically 		    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- Let's look at this type
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output
+:t (*)
+(5 :: Int) * (6 :: Integer)
+(5 :: Int) * 6
+i==i
+#+End_src
+
+#+RESULTS:
+: (*) :: Num a => a -> a -> a
+: <interactive>:281:15:
+:     Couldn't match expected type `Int' with actual type `Integer'
+:     In the second argument of `(*)', namely `(6 :: Integer)'
+:     In the expression: (5 :: Int) * (6 :: Integer)
+:     In an equation for `it': it = (5 :: Int) * (6 :: Integer)
+: 30
+
+** Integral and Floating types
+*** Integral and Floating types					    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- The Integral typeclass only includes Integer and Int
+- The Floating typeclass only includes floats and double
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output
+:t fromIntegral
+fromIntegral (length [1,2,3,4]) + 3.2
+i==i
+#+End_src
+
+#+RESULTS:
+: fromIntegral :: (Integral a, Num b) => a -> b
+: 7.2
+
+
+** Curried Functions 
+*** Every function in haskell only takes one argument 		    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- But what about  'max' or min?
+- We actually apply parameters to functions one at time
+  - These are called "curried" functions
+    - This is after Haskell Curry
+    - max :: (Ord a) => a -> a -> a
+    - max :: (Ord a) => a -> (a -> a)
+- If we call a function with to few parameters we get back a partially
+  applied function
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output
+:set +m
+
+-- multThree :: (Num a) => a -> a -> a -> a  
+multThree x y z = x * y * z  
+multThree 3 5 9 ==  ((multThree 3) 5) 9
+i==1
+#+End_src
+
+#+RESULTS:
+: 
+: Prelude> Prelude> Prelude> True
+
+** Curried comparison
+*** Here is a curried comparison				    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- These are the same because 'x' is on both sides of the equation
+#+BEGIN_SRC haskell :session *plsHaskell* :exports code :results output
+-- compareWithHundred :: (Num a, Ord a, Show a) => a -> Ordering  
+compareWithHundred x = compare 100 x  
+
+-- compareWithHundred1 :: (Num a, Ord a, Show a) => a -> Ordering  
+compareWithHundred1 = compare 100  
+#+End_src
+
+#+RESULTS:
+
+** Example partial application 
+*** Let's look at an infix function				    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- simply surround the function with parentheses and only supply one of
+  the parameters
+- this is called 'sectioning'
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output
+-- divideByTen :: (Floating a) => a -> a
+divideByTen = (/10)
+#+End_src
+
+#+RESULTS:
+
+** partial application of a string function
+*** String functions can be partially applied too		    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- this is written in point free style
+- it is also sectioned 
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output
+-- isUpperAlphanum :: Char -> Bool
+isUpperAlphanum = (`elem` ['A'..'Z'])
+#+End_src
+
+#+RESULTS:
+
+
+** Returned functions
+*** Functions can return functions				    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- take a function and apply it twice
+#+BEGIN_SRC haskell :session *plsHaskell* ::exports both :results output
+-- applyTwice :: (a -> a) -> a -> a
+applyTwice f x = f (f x)
+#+End_src
+
+#+RESULTS:
+
+** ZipWith
+*** We are going to implement ZipWith				    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- It joins two lists and performs a function on the corresponding elements
+#+BEGIN_SRC haskell :session *plsHaskell* ::exports both :results output
+-- zipWith' :: (a -> b -> c) -> [a] -> [b] -> [c]
+zipWith' _ [] _ = []
+zipWith' _ _ [] = []
+zipWith' f (x:xs) (y:ys) = f x y : zipWith' f xs ys
+#+End_src
+
+#+RESULTS:
+
+** flip
+*** flip changes the order of the arguements			    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+#+BEGIN_SRC haskell :session *plsHaskell* ::exports both :results output
+-- flip' :: (a -> b -> c) -> (b -> a -> c)
+flip' f = g
+    where g x y = f y x
+
+-- flip'' :: (a -> b -> c) -> b -> a -> c
+flip'' f y x = f x y
+#+End_src
+
+#+RESULTS:
+
+** Maps and Filters
+*** Map								    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- map takes a function applies the function to each element of a list
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output
+-- map :: (a -> b) -> [a] -> [b]
+map _ [] = []
+map f (x:xs) = f x : map f xs
+#+End_src
+
+#+RESULTS:
+
+** Filter
+*** Filter							    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- 'filter' take a function called a predicate and a list of any type
+- the predicate takes an element of the list and returns a Bool
+  - the filter returns elements for which the predicate is True
+#+BEGIN_SRC haskell :session *plsHaskell* ::exports code :results silent
+filter :: (a -> Bool) -> [a] -> [a]
+filter _ [] = []
+filter p (x:xs) 
+    | p x       = x : filter p xs
+    | otherwise = filter p xs
+#+End_src
+
+#+RESULTS:
+
+** Lambdas
+*** Lamdas are anonymous functions				    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- These are unnamed functions
+- They are passed as parameters to other functions
+- They work like composition in math
+- They are called 'lambdas' because of the 'lambda calculus'
+
+** Church and Turing
+*** Church and Turing					    :B_ignoreheading:
+    :PROPERTIES:
+    :BEAMER_env: ignoreheading
+    :END:
+[[file:images/computability.jpg]]
+
+** Lambda Calculus  
+*** Lambda Calculus is a formal system for computation		    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- it is equivelent to calculation by Turing Machine
+- invented by Alonzo Church in the 1930's
+- Church was Turing's thesis advisor
+  - a function is denoted by the greek letter \(\lambda\)
+  - a function f(x) that maps x -> f(x) is:
+    - \(\lambda x.y\)
+** Example of a lambda
+*** We can pass a lambda to ZipWith 				    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- a lambda function in Haskell starts with '\'
+- can't define several parameters for one para,eters
+#+BEGIN_SRC haskell :session *plsHaskell* :exports code :results output
+zipWith (\a b -> (a * 30 + 3) / b) [5,4,3,2,1] [1,2,3,4,5]
+1==1
+#+End_src
+
+#+RESULTS:
+: [153.0,61.5,31.0,15.75,6.6]
+
+** Quicksort                                                        :B_frame:
+   :PROPERTIES:
+   :BEAMER_env: frame
+   :END:
+*** specification                                                   :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+#+BEGIN_SRC haskell :session *plsHaskell* :exports code :results silent
+-- quicksort :: (Ord a) => [a] -> [a]  
+quicksort [] = []  
+quicksort (x:xs) =   
+    let smallerSorted = quicksort [a | a <- xs, a <= x]  
+        biggerSorted = quicksort [a | a <- xs, a > x]  
+    in  smallerSorted ++ [x] ++ biggerSorted  
+1==1
+#+End_src
+
+#+RESULTS:
+** Folds
+*** Folds encapsulate several functions with (x:xs) patterns	    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- they reduce a list to a single value
+- 'foldl' is the left fold function
+#+BEGIN_SRC haskell :session *plsHaskell* :exports code :results output
+sum' :: (Num a) => [a] -> a
+sum' xs = foldl (\acc x -> acc + x) 0 xs
+
+sum'' :: (Num a) => [a] -> a
+sum'' = foldl (+) 0
+1==1
+#+End_src
+
+** Function application
+*** Function application with $					    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- '$' is called the /function application/
+- changes to right association
+- keeps us from writing parentheses
+
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output
+map ($ 3) [(4+), (10*), (^2), sqrt]
+1==1
+#+End_src
+
+#+RESULTS:
+: [7.0,30.0,9.0,1.7320508075688772*** Exception: <interactive>:1943:1-29: Non-exhaustive patterns in function map
+
+** Function composition
+*** Function composition is just like math			    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- In math  \(f \centerdot g(x) = f(g(x))\)
+- Let's look at Haskell function
+- g takes a -> b
+- f takes b -> c
+\pause
+- so the composition take f . g takes a -> c
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output
+(.) :: (b -> c) -> (a -> b) -> a -> c
+f . g = \x -> f (g x)
+#+End_src
+
+#+RESULTS:
+
+** Function composition examples
+*** Function composition examples
+- with a \lambda
+- with point free notation
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output
+map (\x -> negate (abs x)) [5,-3,-6,7,-3,2,-19,24]
+map (negate . abs) [5,-3,-6,7,-3,2,-19,24]
+#+End_src
+
+#+RESULTS:
+: [-5,-3,-6,-7,-3,-2,-19,-24*** Exception: <interactive>:1943:1-29: Non-exhaustive patterns in function map
+
+* Functors, Applicative Functors and Monoids
+** Polymorphism on a higher level                                   :B_frame:
+   :PROPERTIES:
+   :BEAMER_env: frame
+   :END:
+- Types are not part of a hierarchy
+- We can think about how they should act
+  - then connect them with typeclasses
+
+** Functors defined
+*** definition						 :B_definition:BMCOL:
+    :PROPERTIES:
+    :BEAMER_env: definition
+    :BEAMER_col: .48
+    :END:
+ A functor is a typeclass for all the things that can be mapped over
+
+ \pause
+*** Haskell syntax definition				 :B_definition:BMCOL:
+    :PROPERTIES:
+    :BEAMER_env: definition
+    :BEAMER_col: .48
+    :END:
+
+- class Functor f where
+  - fmap :: (a -> b) -> f a -> f b
+
+
+** Analogy with other typeclasses 
+*** Typeclasses define functions				    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- Eq /defines/ concrete types that are equatable
+  - functions ('==') and ('/=')
+- Ord /defines/ concrete types that 'orderabe'
+  - implements the 'compare' function
+- Enum /defines/ concrete types that enumerable
+  - defines '..' a range
+
+** List Functor examples
+*** List Functor Examples 					  :B_example:
+    :PROPERTIES:
+    :BEAMER_env: example
+    :END:
+- map:: (a -> b)  -> [a] -> [b]
+-  instance Functor [] where
+    - fmap = map
+
+
+** Functor code in the repl
+*** List Functor in the repl
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output :tangle no
+  :t map
+  fmap (*2) [1..3]
+  map (*2) [1..3]
+i==i
+#+end_src
+
+#+RESULTS:
+: map :: (t -> a) -> [t] -> [a]
+: [2,4,6]
+: [2,4,6*** Exception: <interactive>:2790:1-29: Non-exhaustive patterns in function map
+
+** Maybe Functor examples
+*** Maybe Functor Examples 					  :B_example:
+    :PROPERTIES:
+    :BEAMER_env: example
+    :END:
+
+#+BEGIN_example
+  type myMaybe a = Nothing | Just a 
+
+  instance Functor myMaybe where
+    fmap f (Just x) = Just (f x)
+    fmap f Nothing = Nothing
+#+end_example
+** Maybe Functor code in the repl
+*** Maybe Functor in the repl                                       :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output :tangle haskell/no
+  :t fmap
+  fmap (++ " HEY GUYS IM INSIDE THE JUST") (Just "Something serious.")
+  fmap (++ " HEY GUYS IM INSIDE THE JUST") Nothing
+  fmap (*2) (Just 200)
+  fmap (*2) Nothing
+  i==i
+#+end_src
+
+#+RESULTS:
+: fmap :: Functor f => (a -> b) -> f a -> f b
+: Just "Something serious. HEY GUYS IM INSIDE THE JUST"
+: Nothing
+: Just 400
+: Nothing
+
+
+
+* Functor Laws
+** Functor Law intuition
+*** If functors mean that something can be mapped over...	    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- then calling 'fmap' on a functor should
+  - map a function over the functor
+\pause
+- *Nothng else*
+
+** The First Functor Laws
+*** The First Functor Law				       :B_definition:
+    :PROPERTIES:
+    :BEAMER_env: definition
+    :END:
+states that if we map the identity (id) function over a functor, we
+get the functor
+- fmap id = id 
+
+** Identity in the Repl
+*** Identity functions in the repl                                  :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output :tangle no
+fmap id (Just 3)
+id (Just 3)
+fmap id [1..5]
+id [1..5]
+fmap id []
+fmap id Nothing
+1==1
+#+end_src
+
+** The Second Functor Law
+*** The Second Functor Law says				       :B_definition:
+    :PROPERTIES:
+    :BEAMER_env: definition
+    :END:
+The Second Functor Law says that composing two functions and then
+mapping the composed function over a functor is the same as first
+mapping one function over the functor and then mapping the other one.
+- fmap (f.g) = fmap f . fmap g
+- fmap (f.g) F = fmap f (fmap g F)
+
+** Composition in the Repl
+*** Composition functions in the repl                               :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output :tangle no
+fmap ((+1).(*2)) (Just 3)
+fmap (+1) (fmap (*2) (Just 3))
+fmap  ((+1).(*2)) [1..5]
+fmap (+1) (fmap (*2) [1..5])
+1==1
+#+end_src
+
+#+RESULTS:
+: Just 7
+: Just 7
+: [3,5,7,9,11]
+: [3,5,7,9,11]
+
+* Applicative functors
+** What if we map a multi-parameter function over a functor?	    :B_block:
+   :PROPERTIES:
+   :BEAMER_env: block
+   :END:
+- Look at the type signature
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output :tangle no
+a = fmap (*) [1..4]
+:t a
+fmap (\f -> f 9) a
+1==1
+#+end_src
+
+#+RESULTS:
+: 
+: a :: (Num a, Enum a) => [a -> a]
+: [9,18,27,36]
+
+** What if we want to take a function out of a Just
+*** Let's take a Just (3 *) and map				    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+and map it over Just 5
+#+BEGIN_SRC haskell :session *plsHaskell* :exports code :results output
+:set +m
+:{
+class (Functor f) => Applicative f where
+    pure :: a -> f a;
+    (<*>) :: f (a -> b) -> f a -> f b
+:}
+#+end_src
+
+#+RESULTS:
+
+** Maybe Applicative
+*** Let's look at the Applicative for Maybe			    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+#+BEGIN_SRC haskell :session *plsHaskell* :exports code :results output
+:set +m
+:{
+instance Applicative MyMaybe where
+    pure = Just
+    Nothing <*> _ = Nothing
+    (Just f) <*> something = fmap f something
+:}
+#+end_src
+
+#+RESULTS:
+
+** Maybe Applicative inside the repl
+*** Using the Maybe Applicative
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output
+-- :add Control.Applicative
+Just (+3) <*> Just 9
+pure (*2) <*> Just 10
+pure (+3) <*> Just 9
+Just (++"!!") <*> Just "Go now"
+Nothing <*> Just "woot"
+1==1
+#+end_src
+
+#+RESULTS:
+: 
+: Just 12
+: Just 20
+: Just 12
+: Just "Go now!!"
+: Nothing
+
+
+** Fmap as an infix operator
+*** Control.Applicative exports a function called <$>		    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+which is fmap as an infix operator
+#+BEGIN_SRC haskell :session *plsHaskell* :exports code :results output :tangle no
+(<$>) :: (Functor f) => (a->b) -> f a -> f b
+f <$> x = fmap f x
+#+end_src
+
+#+RESULTS:
+
+** Compare Applicatives in the repl 
+*** Infix fmap in the repl
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output :tangle no
+(++) <$> Just "John " <*> Just "Travolta"
+(++) "John " "Travolta"
+1==1 
+#+end_src
+
+#+RESULTS:
+: Just "John Travolta"
+: John Travolta
+
+** Lists are Applicative Functors
+*** Definition of the Applicative for a list		       :B_definition:
+    :PROPERTIES:
+    :BEAMER_env: definition
+    :END:
+- Literally a Cartesian product of functions and list values
+#+BEGIN_SRC haskell :session *plsHaskell* :exports code :results output :tangle no
+:set +m
+:{
+instance Applicative [] where
+    pure x = [x]
+    fs <*> xs = [f x | f <- fs, x<- xs]
+:}
+#+end_src
+
+#+RESULTS:
+
+** Applicative Functors of lists in the repl
+*** Applicative Functors of lists in the repl
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output :tangle no
+[(*0),(+100),(^2)] <*> [1..4]
+[(+),(*)] <*>[1,2]<*>[3,4]
+(++) <$> ["ha","heh","hmm"] <*> ["?","!","."]
+1==1
+#+end_src
+
+#+RESULTS:
+: [0,0,0,0,101,102,103,104,1,4,9,16]
+: [4,5,5,6,3,4,6,8]
+: ["ha?","ha!","ha.","heh?","heh!","heh.","hmm?","hmm!","hmm."]
+
+** IO is an Applicative
+*** Let's see how the IO Applicative is implemented: 		    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+#+BEGIN_SRC haskell :session *plsHaskell* :exports code :results output :tangle no
+:set +m
+:{
+instance Applicative IO where
+    pure = return
+    a <*> b = do
+        f <- a
+        x <- b
+        return (f x)
+:}
+#+end_src
+
+#+RESULTS:
+
+** Concatenating IO strings
+*** Two ways to concatenate two lines of user input string    :B_block:BMCOL:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: .48
+    :END:
+- Imperative code
+#+BEGIN_SRC haskell :session *plsHaskell* :exports code :results output :tangle haskell/concatTwo.hs
+:set +m
+:{
+myAction :: IO String
+myAction = do
+    a <- getLine
+    b <- getLine
+    return $ a ++ b
+:}
+#+end_src
+
+#+RESULTS:
+
+*** Applicative way to concatenate two lines of user input string :B_block:BMCOL:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: .48
+    :END:
+- Applicative code
+#+BEGIN_SRC haskell :session *plsHaskell* :exports code :results output :tangle haskell/AppConcatTwo.hs
+:set +m
+:{
+myAction :: IO String
+myAction = (++) 
+            <$> getLine 
+            <*> getLine
+:}
+#+end_src
+
+#+RESULTS:
+
+** The first Applicative Functor Law
+*** The first Applicative Functor Law				  :B_theorem:
+    :PROPERTIES:
+    :BEAMER_env: theorem
+    :END:
+- pure f <*> x = fmap f x 
+
+
+* The newtype keyword
+** Some lessons we've skipped                                  :B_definition:
+   :PROPERTIES:
+   :BEAMER_env: definition
+   :END:
+*** Defining types
+- /data/ will define a new algebraic type
+- /type/ creates a type synonym
+- /newtype/ creates new types from old types
+
+** Applicative Functor in two ways                                  :B_frame:
+   :PROPERTIES:
+   :BEAMER_env: frame
+   :END:
+*** function left, each argument right 			      :B_block:BMCOL:
+    :PROPERTIES:
+    :BEAMER_col: .48
+    :BEAMER_env: block
+    :END:
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output :tangle no
+:m Control.Applicative
+[(+1),(*100),(*5)] <*> [1..3]
+1==1
+#+end_src
+
+#+RESULTS:
+: 
+: [2,3,4,100,200,300,5,10,15]
+
+*** function left, every argument right			      :B_block:BMCOL:
+    :PROPERTIES:
+    :BEAMER_col: .48
+    :BEAMER_env: block
+    :END:
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output :tangle no
+:set +m
+:{
+instance Applicative ZipList where  
+        pure x = ZipList (repeat x)  
+        ZipList fs <*> ZipList xs = ZipList (zipWith (\f x -> f x) fs xs)  
+:}
+  getZipList $ ZipList [(+1),(*100),(*5)] <*> ZipList [1,2,3]
+  -- getZipList $
+  -- ZipList [(+1),(*100),(*5)]
+  --  <*> ZipList [1,2,3]
+1==1
+#+end_src
+
+#+RESULTS:
+: 
+: Prelude Control.Applicative| Prelude Control.Applicative| Prelude Control.Applicative| Prelude Control.Applicative| Prelude Control.Applicative> [2,200,15]
+
+
+
+** The newtype keyword                                              :B_frame:
+*** 'newtype' takes one type and wrap it			    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- to present it as another type
+~newtype ZipList a = ZipList {getZipList :: [a]}~
+- data can have multiple value contstructors
+** type vs. newtype vs. data examples
+*** 'data' to make new types                                        :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- Here are additive and multiplicative types with multiple constructors
+#+BEGIN_SRC haskell :session *plsHaskell* :exports code :results output :tangle haskell/playChar.hs
+data Profession = Fighter | Archer | Wizard
+data Species = Human | Elf | Orc | Goblin
+data PlayerCharacter = PlayerCharacter Species Profession
+#+end_src
+
+** Using newtype to drive typeclass properties                      :B_block:
+   :PROPERTIES:
+   :BEAMER_env: block
+   :END:
+*** newtype
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output :tangle no
+newtype CharList = CharList {getCharList :: [Char]} deriving(Eq,Show)
+CharList "this will be shown!"
+CharList "benny" == CharList "benny"
+CharList "benny" == CharList "oisters"
+1==1
+#+end_src
+
+#+RESULTS:
+: 
+: CharList {getCharList = "this will be shown!"}
+: True
+: False
+
+
+* Monoids
+** Monoid Definition
+*** Monoid definition					       :B_definition:
+    :PROPERTIES:
+    :BEAMER_env: definition
+    :END:
+A data type, category or set is a *monoid* if it has a binary
+operation \bullet which is associative and has an identity.
+- \(\forall a,b,c \in S, (a \bullet b) \bullet c = a \bullet (b \bullet c) \)
+- \(e \bullet a = a \bullet e = a \)
+
+#+BEGIN_SRC haskell :session *plsHaskell* :exports code :results output :tangle no
+:set +m
+:{
+class Monoid m where
+    mempty :: m
+    mappend :: m -> m -> m
+    mconcat :: [m] -> m
+    mconcat = foldr mappend mempty
+:}
+#+end_src
+
+#+RESULTS:
+
+** Monoid functions defined
+*** Defining the monoid functions				    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- 'mempty' is just the identity function
+- mappend is the binary function
+  - *it doesn't just append*
+- mconcat reduces a list of monoid values and reduces them to one by
+  applying mappend
+
+** Monoid Laws
+*** The Monoid Laws are just the definition in Haskell		  :B_theorem:
+    :PROPERTIES:
+    :BEAMER_env: theorem
+    :END:
+- mappend mempty x = x
+- mappend x mempty = x
+- mappend (mappend x y) z = mappend x (mappend y z) 
+* Lists are monoids
+** Monoid examples
+*** List is a monoid						  :B_example:
+    :PROPERTIES:
+    :BEAMER_env: example
+    :END:
+- [] with (++) is a monoid
+  - id = ""
+- Natural numbers with (*) is a monoid
+  - id = 1
+- Natural numbers with (+) is a monoid
+  - id = 0
+
+
+** Why is all of this important to you                              :B_frame:
+   :PROPERTIES:
+   :BEAMER_env: frame
+   :END:
+
+- [[https://www.bls.gov/ooh/computer-and-information-technology/mobile/software-developers.htm][BLS Statistics]]
+- 2015 median salary is $100,690
+- Number of jobs: 1,114,000
+- Job growth: 17% (much faster than average)
+
+** From NY State Comptroller's office                               :B_frame:
+   :PROPERTIES:
+   :BEAMER_env: frame
+   :END:
+- [[https://www.bls.gov/ooh/computer-and-information-technology/mobile/software-developers.htm][The Technology Sector in New York City 4/2018]]
+- New York State had the third-largest tech sector in the nation
+  in 2016.
+- Employment in NYC’s tech sector increased by 57% between 2010 and
+  2016 (46,900 jobs), 3x faster than the rest of the private sector
+- The average salary increased 3x faster than the rest of the City’s
+  private sector to reach a record $147,300 by 2016
+
+** Salaries vs Graduation                                       :B_fullframe:
+   :PROPERTIES:
+   :BEAMER_env: fullframe
+   :END:
+#+ATTR_LATEX: :width .9\linewidth
+[[./images/salaryVgraduation.png]]
+
+** NYC Demographics                                                 :B_frame:
+   :PROPERTIES:
+   :BEAMER_env: frame
+   :END:
+#+BEGIN_QUOTE
+In New York City, 44.6% of the population is white, 25.1% is black, and
+11.8% are of Asian descent. Hispanics of any race represent about
+27.5% percent of New York City's population
+#+END_QUOTE
+- US Census 2018
+
+** NYC Tech Sector does not reflect our diversity                   :B_frame:
+  :PROPERTIES:
+  :BEAMER_env: frame
+  :END:
+#+BEGIN_QUOTE
+[B]lacks and Latinos constitute 25.1 percent and 27.5 percent of the
+population, respectively, but only 9 percent and 11 percent,
+respectively, are employed in the tech sector.
+#+END_QUOTE
+- [[https://citylimits.org/2015/09/15/why-is-new-york-citys-growing-technology-sector-so-white/][City Limits:  Why is NYC Tech so White?]]
+
+** Salaries Distribution                                        :B_fullframe:
+   :PROPERTIES:
+   :BEAMER_env: fullframe
+   :END:
+#+ATTR_LATEX: :width .9\linewidth
+[[./images/salaryDist.png]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+** Reverences                                                       :B_frame:
+   :PROPERTIES:
+   :BEAMER_env: frame
+   :END:
+- [[http://www2.cuny.edu/wp-content/uploads/sites/4/page-assets/about/administration/offices/oira/institutional/surveys/SES_Presentation_EMC_accessible.pdf][CUNY Student Experience 2016]]
+- [[https://techcrunch.com/2015/08/20/new-york-citys-tech-industry-is-62-percent-white-60-percent-male/][NYC Tech is 62% White, 60% male]]
+- [[https://nycfuture.org/data/nycs-tech-profile][NYC Tech Profile]]
+- [[https://citylimits.org/2015/09/15/why-is-new-york-citys-growing-technology-sector-so-white/][Why NYC's Growing Tech Sector is so White]]
+- [[http://www.crainsnewyork.com/article/20150706/BLOGS01/150709955/numbers-say-new-yorks-tech-boom-is-real][Numbers say New York's tech boom is real]]
+- [[http://libertystreeteconomics.newyorkfed.org/2015/07/will-silicon-alley-be-the-next-silicon-valley.html#.VZvrd-fDFB8][Will Silicon Alley Be the Next Silicon Valley?]]
+- [[https://www.osc.state.ny.us/osdc/rpt4-2018.pdf][The Technology Sector in New York City]]
+- [[http://worldpopulationreview.com/us-cities/new-york-city-population/][NYC Population]]
+- [[http://www1.nyc.gov/office-of-the-mayor/news/677-17/de-blasio-administration-new-initiative-double-number-graduates-tech][CUNY 2x Initiative]]

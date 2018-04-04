@@ -1,0 +1,112 @@
+% Created 2018-04-03 Tue 13:07
+% Intended LaTeX compiler: pdflatex
+\documentclass[presetation]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usetheme{Madrid}
+\author{Evan Misshula}
+\date{2018-03-28}
+\title{Why teaching functional programming to undergraduates at CUNY is important}
+\hypersetup{
+ pdfauthor={Evan Misshula},
+ pdftitle={Why teaching functional programming to undergraduates at CUNY is important},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 25.2.1 (Org mode 9.0.6)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+
+\section{Functor Laws}
+\label{sec:orgeaca1d8}
+\begin{frame}[label={sec:orgeb2cca6}]{Functor Law intuition}
+\begin{block}{If functors mean that something can be mapped over\ldots{}}
+\begin{itemize}
+\item then calling 'fmap' on a functor should
+\begin{itemize}
+\item map a function over the functor
+\end{itemize}
+\end{itemize}
+\pause
+\begin{itemize}
+\item \alert{Nothng else}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[label={sec:org8feac8d}]{The First Functor Laws}
+\begin{definition}[The First Functor Law]
+states that if we map the identity (id) function over a functor, we
+get the functor
+\begin{itemize}
+\item fmap id = id
+\end{itemize}
+\end{definition}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org2f384cf}]{Identity in the Repl}
+ \begin{block}{Identity functions in the repl}
+\begin{verbatim}
+fmap id (Just 3)
+id (Just 3)
+fmap id [1..5]
+id [1..5]
+fmap id []
+fmap id Nothing
+1==1
+\end{verbatim}
+
+\begin{verbatim}
+Just 3
+Just 3
+[1,2,3,4,5]
+[1,2,3,4,5]
+[]
+Nothing
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\begin{frame}[label={sec:org6bdd93c}]{The Second Functor Law}
+\begin{definition}[The Second Functor Law says]
+The Second Functor Law says that composing two functions and then
+mapping the composed function over a functor is the same as first
+mapping one function over the functor and then mapping the other one.
+\begin{itemize}
+\item fmap (f.g) = fmap f . fmap g
+\item fmap (f.g) F = fmap f (fmap g F)
+\end{itemize}
+\end{definition}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org7e87142}]{Composition in the Repl}
+ \begin{block}{Composition functions in the repl}
+\begin{verbatim}
+fmap ((+1).(*2)) (Just 3)
+fmap (+1) (fmap (*2) (Just 3))
+fmap  ((+1).(*2)) [1..5]
+fmap (+1) (fmap (*2) [1..5])
+1==1
+\end{verbatim}
+
+\begin{verbatim}
+Just 7
+Just 7
+[3,5,7,9,11]
+[3,5,7,9,11]
+\end{verbatim}
+\end{block}
+\end{frame}
+\end{document}

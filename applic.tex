@@ -1,0 +1,252 @@
+% Created 2018-04-03 Tue 15:53
+% Intended LaTeX compiler: pdflatex
+\documentclass[presetation]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usetheme{Madrid}
+\author{Evan Misshula}
+\date{2018-03-28}
+\title{Why teaching functional programming to undergraduates at CUNY is important}
+\hypersetup{
+ pdfauthor={Evan Misshula},
+ pdftitle={Why teaching functional programming to undergraduates at CUNY is important},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 25.2.1 (Org mode 9.0.6)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+
+\section{Applicative functors}
+\label{sec:org2513024}
+\begin{frame}[fragile,label={sec:org7500da3}]{What if we map a multi-parameter function over a functor?}
+ \begin{itemize}
+\item Look at the type signature
+\end{itemize}
+\begin{verbatim}
+a = fmap (*) [1..4]
+:t a
+fmap (\f -> f 9) a
+1==1
+\end{verbatim}
+
+\begin{verbatim}
+
+a :: (Num a, Enum a) => [a -> a]
+[9,18,27,36]
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:orgdcfb95f}]{What if we want to take a function out of a Just}
+ \begin{block}{Let's take a Just (3 *) and map}
+and map it over Just 5
+\begin{verbatim}
+:set +m
+:{
+class (Functor f) => Applicative f where
+    pure :: a -> f a;
+    (<*>) :: f (a -> b) -> f a -> f b
+:}
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org8e7ac2e}]{Maybe Applicative}
+ \begin{block}{Let's look at the Applicative for Maybe}
+\begin{verbatim}
+:set +m
+:{
+instance Applicative MyMaybe where
+    pure = Just
+    Nothing <*> _ = Nothing
+    (Just f) <*> something = fmap f something
+:}
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org12d88ee}]{Maybe Applicative inside the repl}
+ \begin{block}{Using the Maybe Applicative}
+\begin{verbatim}
+-- :add Control.Applicative
+Just (+3) <*> Just 9
+pure (*2) <*> Just 10
+pure (+3) <*> Just 9
+Just (++"!!") <*> Just "Go now"
+Nothing <*> Just "woot"
+1==1
+\end{verbatim}
+
+\begin{verbatim}
+
+<interactive>:587:1: error:
+    • Could not deduce (Applicative Maybe) arising from a use of ‘<*>’
+      from the context: Num b
+        bound by the inferred type of it :: Num b => Maybe b
+        at <interactive>:587:1-20
+    • In the expression: Just (+ 3) <*> Just 9
+      In an equation for ‘it’: it = Just (+ 3) <*> Just 9
+<interactive>:588:1: error:
+    • Could not deduce (Applicative Maybe) arising from a use of ‘<*>’
+      from the context: Num b
+        bound by the inferred type of it :: Num b => Maybe b
+        at <interactive>:588:1-21
+    • In the expression: pure (* 2) <*> Just 10
+      In an equation for ‘it’: it = pure (* 2) <*> Just 10
+<interactive>:589:1: error:
+    • Could not deduce (Applicative Maybe) arising from a use of ‘<*>’
+      from the context: Num b
+        bound by the inferred type of it :: Num b => Maybe b
+        at <interactive>:589:1-20
+    • In the expression: pure (+ 3) <*> Just 9
+      In an equation for ‘it’: it = pure (+ 3) <*> Just 9
+<interactive>:590:1: error:
+    • No instance for (Applicative Maybe) arising from a use of ‘<*>’
+    • In the expression: Just (++ "!!") <*> Just "Go now"
+      In an equation for ‘it’: it = Just (++ "!!") <*> Just "Go now"
+<interactive>:591:1: error:
+    • No instance for (Applicative Maybe) arising from a use of ‘<*>’
+    • In the expression: Nothing <*> Just "woot"
+      In an equation for ‘it’: it = Nothing <*> Just "woot"
+\end{verbatim}
+\end{block}
+\end{frame}
+
+
+\begin{frame}[fragile,label={sec:orgdc1d982}]{Fmap as an infix operator}
+ \begin{block}{Control.Applicative exports a function called <\$>}
+which is fmap as an infix operator
+\begin{verbatim}
+(<$>) :: (Functor f) => (a->b) -> f a -> f b
+f <$> x = fmap f x
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org76bae1d}]{Compare Applicatives in the repl}
+ \begin{block}{Infix fmap in the repl}
+\begin{verbatim}
+(++) <$> Just "John " <*> Just "Travolta"
+(++) "John " "Travolta"
+1==1 
+\end{verbatim}
+
+\begin{verbatim}
+<interactive>:597:1: error:
+    • No instance for (Applicative Maybe) arising from a use of ‘<*>’
+    • In the expression: (++) <$> Just "John " <*> Just "Travolta"
+      In an equation for ‘it’:
+          it = (++) <$> Just "John " <*> Just "Travolta"
+John Travolta
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:orgae70591}]{Lists are Applicative Functors}
+ \begin{definition}[Definition of the Applicative for a list]
+\begin{itemize}
+\item Literally a Cartesian product of functions and list values
+\end{itemize}
+\begin{verbatim}
+:set +m
+:{
+instance Applicative [] where
+    pure x = [x]
+    fs <*> xs = [f x | f <- fs, x<- xs]
+:}
+\end{verbatim}
+\end{definition}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org5c2dcab}]{Applicative Functors of lists in the repl}
+ \begin{block}{Applicative Functors of lists in the repl}
+\begin{verbatim}
+[(*0),(+100),(^2)] <*> [1..4]
+[(+),(*)] <*>[1,2]<*>[3,4]
+(++) <$> ["ha","heh","hmm"] <*> ["?","!","."]
+1==1
+\end{verbatim}
+
+\begin{verbatim}
+[0,0,0,0,101,102,103,104,1,4,9,16]
+[4,5,5,6,3,4,6,8]
+["ha?","ha!","ha.","heh?","heh!","heh.","hmm?","hmm!","hmm."]
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org2b76b7f}]{IO is an Applicative}
+ \begin{block}{Let's see how the IO Applicative is implemented:}
+\begin{verbatim}
+:set +m
+:{
+instance Applicative IO where
+    pure = return
+    a <*> b = do
+	f <- a
+	x <- b
+	return (f x)
+:}
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:orgb8e8759}]{Concatenating IO strings}
+ \begin{columns}
+\begin{column}{.48\columnwidth}
+\begin{block}{Two ways to concatenate two lines of user input string}
+\begin{itemize}
+\item Imperative code
+\end{itemize}
+\begin{verbatim}
+:set +m
+:{
+myAction :: IO String
+myAction = do
+    a <- getLine
+    b <- getLine
+    return $ a ++ b
+:}
+\end{verbatim}
+\end{block}
+\end{column}
+
+\begin{column}{.48\columnwidth}
+\begin{block}{Applicative way to concatenate two lines of user input string}
+\begin{itemize}
+\item Applicative code
+\end{itemize}
+\begin{verbatim}
+:set +m
+:{
+myAction :: IO String
+myAction = (++) 
+	    <$> getLine 
+	    <*> getLine
+:}
+\end{verbatim}
+\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[label={sec:org725cf53}]{The first Applicative Functor Law}
+\begin{theorem}[The first Applicative Functor Law]
+\begin{itemize}
+\item pure f <*> x = fmap f x
+\end{itemize}
+\end{theorem}
+\end{frame}
+\end{document}

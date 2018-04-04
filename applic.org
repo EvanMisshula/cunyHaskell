@@ -1,0 +1,211 @@
+#+Title: Why teaching functional programming to undergraduates at CUNY is important
+#+Author: Evan Misshula
+#+Email: emisshula@jjay.cuny.edu
+#+Date: 2018-03-28
+
+#+OPTIONS: H:2 toc:nil num:t
+#+TAGS:       Write(w) Update(u) Fix(f) Check(c) noexport(n) export(e)
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+LANGUAGE:  en
+#+STARTUP: beamer
+#+EXPORT_SELECT_TAGS: export(e)
+#+EXPORT_EXCLUDE_TAGS: noexport(n)
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [presetation]
+#+BEAMER_THEME: Madrid
+#+COLUMNS: %45ITEM %10BEAMER_ENV(Env) %10BEAMER_ACT(Act) %4BEAMER_COL(Col) %8BEAMER_OPT(Opt)
+
+* Applicative functors
+** What if we map a multi-parameter function over a functor?	    :B_block:
+   :PROPERTIES:
+   :BEAMER_env: block
+   :END:
+- Look at the type signature
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output :tangle no
+a = fmap (*) [1..4]
+:t a
+fmap (\f -> f 9) a
+1==1
+#+end_src
+
+#+RESULTS:
+: 
+: a :: (Num a, Enum a) => [a -> a]
+: [9,18,27,36]
+
+** What if we want to take a function out of a Just
+*** Let's take a Just (3 *) and map				    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+and map it over Just 5
+#+BEGIN_SRC haskell :session *plsHaskell* :exports code :results output
+:set +m
+:{
+class (Functor f) => Applicative f where
+    pure :: a -> f a;
+    (<*>) :: f (a -> b) -> f a -> f b
+:}
+#+end_src
+
+#+RESULTS:
+
+** Maybe Applicative
+*** Let's look at the Applicative for Maybe			    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+#+BEGIN_SRC haskell :session *plsHaskell* :exports code :results output
+:set +m
+:{
+instance Applicative MyMaybe where
+    pure = Just
+    Nothing <*> _ = Nothing
+    (Just f) <*> something = fmap f something
+:}
+#+end_src
+
+#+RESULTS:
+
+** Maybe Applicative inside the repl
+*** Using the Maybe Applicative
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output
+-- :add Control.Applicative
+Just (+3) <*> Just 9
+pure (*2) <*> Just 10
+pure (+3) <*> Just 9
+Just (++"!!") <*> Just "Go now"
+Nothing <*> Just "woot"
+1==1
+#+end_src
+
+#+RESULTS:
+: 
+: Just 12
+: Just 20
+: Just 12
+: Just "Go now!!"
+: Nothing
+
+
+** Fmap as an infix operator
+*** Control.Applicative exports a function called <$>		    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+which is fmap as an infix operator
+#+BEGIN_SRC haskell :session *plsHaskell* :exports code :results output :tangle no
+(<$>) :: (Functor f) => (a->b) -> f a -> f b
+f <$> x = fmap f x
+#+end_src
+
+#+RESULTS:
+
+** Compare Applicatives in the repl 
+*** Infix fmap in the repl
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output :tangle no
+(++) <$> Just "John " <*> Just "Travolta"
+(++) "John " "Travolta"
+1==1 
+#+end_src
+
+#+RESULTS:
+: Just "John Travolta"
+: John Travolta
+
+** Lists are Applicative Functors
+*** Definition of the Applicative for a list		       :B_definition:
+    :PROPERTIES:
+    :BEAMER_env: definition
+    :END:
+- Literally a Cartesian product of functions and list values
+#+BEGIN_SRC haskell :session *plsHaskell* :exports code :results output :tangle no
+:set +m
+:{
+instance Applicative [] where
+    pure x = [x]
+    fs <*> xs = [f x | f <- fs, x<- xs]
+:}
+#+end_src
+
+#+RESULTS:
+
+** Applicative Functors of lists in the repl
+*** Applicative Functors of lists in the repl
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output :tangle no
+[(*0),(+100),(^2)] <*> [1..4]
+[(+),(*)] <*>[1,2]<*>[3,4]
+(++) <$> ["ha","heh","hmm"] <*> ["?","!","."]
+1==1
+#+end_src
+
+#+RESULTS:
+: [0,0,0,0,101,102,103,104,1,4,9,16]
+: [4,5,5,6,3,4,6,8]
+: ["ha?","ha!","ha.","heh?","heh!","heh.","hmm?","hmm!","hmm."]
+
+** IO is an Applicative
+*** Let's see how the IO Applicative is implemented: 		    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+#+BEGIN_SRC haskell :session *plsHaskell* :exports code :results output :tangle no
+:set +m
+:{
+instance Applicative IO where
+    pure = return
+    a <*> b = do
+        f <- a
+        x <- b
+        return (f x)
+:}
+#+end_src
+
+#+RESULTS:
+
+** Concatenating IO strings
+*** Two ways to concatenate two lines of user input string    :B_block:BMCOL:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: .48
+    :END:
+- Imperative code
+#+BEGIN_SRC haskell :session *plsHaskell* :exports code :results output :tangle haskell/concatTwo.hs
+:set +m
+:{
+myAction :: IO String
+myAction = do
+    a <- getLine
+    b <- getLine
+    return $ a ++ b
+:}
+#+end_src
+
+#+RESULTS:
+
+*** Applicative way to concatenate two lines of user input string :B_block:BMCOL:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: .48
+    :END:
+- Applicative code
+#+BEGIN_SRC haskell :session *plsHaskell* :exports code :results output :tangle haskell/AppConcatTwo.hs
+:set +m
+:{
+myAction :: IO String
+myAction = (++) 
+            <$> getLine 
+            <*> getLine
+:}
+#+end_src
+
+#+RESULTS:
+
+** The first Applicative Functor Law
+*** The first Applicative Functor Law				  :B_theorem:
+    :PROPERTIES:
+    :BEAMER_env: theorem
+    :END:
+- pure f <*> x = fmap f x 
+

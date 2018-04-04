@@ -1,0 +1,128 @@
+% Created 2018-04-03 Tue 16:31
+% Intended LaTeX compiler: pdflatex
+\documentclass[presetation]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usetheme{Madrid}
+\author{Evan Misshula}
+\date{2018-03-28}
+\title{Why teaching functional programming to undergraduates at CUNY is important}
+\hypersetup{
+ pdfauthor={Evan Misshula},
+ pdftitle={Why teaching functional programming to undergraduates at CUNY is important},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 25.2.1 (Org mode 9.0.6)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+
+\section{The newtype keyword}
+\label{sec:org8d1fc5a}
+\begin{frame}[label={sec:org620bd4c}]{Some lessons we've skipped}
+\begin{block}{Defining types}
+\begin{itemize}
+\item \emph{data} will define a new algebraic type
+\item \emph{type} creates a type synonym
+\item \emph{newtype} creates new types from old types
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org6f749a0}]{Applicative Functor in two ways}
+ \begin{columns}
+\begin{column}{.48\columnwidth}
+\begin{block}{function left, each argument right}
+\begin{verbatim}
+:m Control.Applicative
+[(+1),(*100),(*5)] <*> [1..3]
+1==1
+\end{verbatim}
+
+\begin{verbatim}
+
+[2,3,4,100,200,300,5,10,15]
+\end{verbatim}
+\end{block}
+\end{column}
+
+\begin{column}{.48\columnwidth}
+\begin{block}{function left, every argument right}
+\begin{verbatim}
+:set +m
+:{
+instance Applicative ZipList where  
+	pure x = ZipList (repeat x)  
+	ZipList fs <*> ZipList xs = ZipList (zipWith (\f x -> f x) fs xs)  
+:}
+  getZipList $ ZipList [(+1),(*100),(*5)] <*> ZipList [1,2,3]
+  -- getZipList $
+  -- ZipList [(+1),(*100),(*5)]
+  --  <*> ZipList [1,2,3]
+1==1
+\end{verbatim}
+
+\begin{verbatim}
+
+Prelude Control.Applicative| Prelude Control.Applicative| Prelude Control.Applicative| Prelude Control.Applicative| Prelude Control.Applicative> [2,200,15]
+\end{verbatim}
+\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+
+
+\begin{frame}[label={sec:org398e7f7}]{The newtype keyword}
+\begin{block}{'newtype' takes one type and wrap it}
+\begin{itemize}
+\item to present it as another type
+\item[{\textasciitilde{}newtype ZipList a = ZipList \{getZipList}] [a]\}\textasciitilde{}
+\item data can have multiple value contstructors
+\end{itemize}
+\end{block}
+\end{frame}
+\begin{frame}[fragile,label={sec:org30d08f6}]{type vs. newtype vs. data examples}
+ \begin{block}{'data' to make new types}
+\begin{itemize}
+\item Here are additive and multiplicative types with multiple constructors
+\end{itemize}
+\begin{verbatim}
+data Profession = Fighter | Archer | Wizard
+data Species = Human | Elf | Orc | Goblin
+data PlayerCharacter = PlayerCharacter Species Profession
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:orge6b2485}]{Using newtype to drive typeclass properties}
+ \begin{block}{newtype}
+\begin{verbatim}
+newtype CharList = CharList {getCharList :: [Char]} deriving(Eq,Show)
+CharList "this will be shown!"
+CharList "benny" == CharList "benny"
+CharList "benny" == CharList "oisters"
+1==1
+\end{verbatim}
+
+\begin{verbatim}
+
+CharList {getCharList = "this will be shown!"}
+True
+False
+\end{verbatim}
+\end{block}
+\end{frame}
+\end{document}

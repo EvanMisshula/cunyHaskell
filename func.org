@@ -1,0 +1,77 @@
+#+Title: Why teaching functional programming to undergraduates at CUNY is important
+#+Author: Evan Misshula
+#+Email: emisshula@jjay.cuny.edu
+#+Date: 2018-03-28
+
+#+OPTIONS: H:2 toc:nil num:t
+#+TAGS:       Write(w) Update(u) Fix(f) Check(c) noexport(n) export(e)
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+LANGUAGE:  en
+#+STARTUP: beamer
+#+EXPORT_SELECT_TAGS: export(e)
+#+EXPORT_EXCLUDE_TAGS: noexport(n)
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [presetation]
+#+BEAMER_THEME: Madrid
+#+COLUMNS: %45ITEM %10BEAMER_ENV(Env) %10BEAMER_ACT(Act) %4BEAMER_COL(Col) %8BEAMER_OPT(Opt)
+
+* Functor Laws
+** Functor Law intuition
+*** If functors mean that something can be mapped over...	    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- then calling 'fmap' on a functor should
+  - map a function over the functor
+\pause
+- *Nothng else*
+
+** The First Functor Laws
+*** The First Functor Law				       :B_definition:
+    :PROPERTIES:
+    :BEAMER_env: definition
+    :END:
+states that if we map the identity (id) function over a functor, we
+get the functor
+- fmap id = id 
+
+** Identity in the Repl
+*** Identity functions in the repl
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output :tangle no
+fmap id (Just 3)
+id (Just 3)
+fmap id [1..5]
+id [1..5]
+fmap id []
+fmap id Nothing
+1==1
+#+end_src
+
+** The Second Functor Law
+*** The Second Functor Law says				       :B_definition:
+    :PROPERTIES:
+    :BEAMER_env: definition
+    :END:
+The Second Functor Law says that composing two functions and then
+mapping the composed function over a functor is the same as first
+mapping one function over the functor and then mapping the other one.
+- fmap (f.g) = fmap f . fmap g
+- fmap (f.g) F = fmap f (fmap g F)
+
+** Composition in the Repl
+*** Composition functions in the repl
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output :tangle no
+fmap ((+1).(*2)) (Just 3)
+fmap (+1) (fmap (*2) (Just 3))
+fmap  ((+1).(*2)) [1..5]
+fmap (+1) (fmap (*2) [1..5])
+1==1
+#+end_src
+
+#+RESULTS:
+: Just 7
+: Just 7
+: [3,5,7,9,11]
+: [3,5,7,9,11]
+

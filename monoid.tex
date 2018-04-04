@@ -1,0 +1,103 @@
+% Created 2018-04-03 Tue 17:05
+% Intended LaTeX compiler: pdflatex
+\documentclass[presetation]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usetheme{Madrid}
+\author{Evan Misshula}
+\date{2018-03-28}
+\title{Why teaching functional programming to undergraduates at CUNY is important}
+\hypersetup{
+ pdfauthor={Evan Misshula},
+ pdftitle={Why teaching functional programming to undergraduates at CUNY is important},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 25.2.1 (Org mode 9.0.6)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+
+
+
+
+
+\section{Monoids}
+\label{sec:org860c089}
+\begin{frame}[fragile,label={sec:orga6509a5}]{Monoid Definition}
+ \begin{definition}[Monoid definition]
+A data type, category or set is a \alert{monoid} if it has a binary
+operation \textbullet{} which is associative and has an identity.
+\begin{itemize}
+\item \(\forall a,b,c \in S, (a \bullet b) \bullet c = a \bullet (b \bullet c)\)
+\item \(e \bullet a = a \bullet e = a\)
+\end{itemize}
+
+\begin{verbatim}
+:set +m
+:{
+class Monoid m where
+    mempty :: m
+    mappend :: m -> m -> m
+    mconcat :: [m] -> m
+    mconcat = foldr mappend mempty
+:}
+\end{verbatim}
+\end{definition}
+\end{frame}
+
+\begin{frame}[label={sec:org65f3680}]{Monoid functions defined}
+\begin{block}{Defining the monoid functions}
+\begin{itemize}
+\item 'mempty' is just the identity function
+\item mappend is the binary function
+\begin{itemize}
+\item \alert{it doesn't just append}
+\end{itemize}
+\item mconcat reduces a list of monoid values and reduces them to one by
+applying mappend
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[label={sec:org8ab1b3a}]{Monoid Laws}
+\begin{theorem}[The Monoid Laws are just the definition in Haskell]
+\begin{itemize}
+\item mappend mempty x = x
+\item mappend x mempty = x
+\item mappend (mappend x y) z = mappend x (mappend y z)
+\end{itemize}
+\end{theorem}
+\end{frame}
+\section{Lists are monoids}
+\label{sec:org32c4724}
+\begin{frame}[label={sec:org173991c}]{Monoid examples}
+\begin{example}[List is a monoid]
+\begin{itemize}
+\item\relax [] with (++) is a monoid
+\begin{itemize}
+\item id = ""
+\end{itemize}
+\item Natural numbers with (*) is a monoid
+\begin{itemize}
+\item id = 1
+\end{itemize}
+\item Natural numbers with (+) is a monoid
+\begin{itemize}
+\item id = 0
+\end{itemize}
+\end{itemize}
+\end{example}
+\end{frame}
+\end{document}

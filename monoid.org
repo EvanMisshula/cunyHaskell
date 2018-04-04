@@ -1,0 +1,82 @@
+#+Title: Why teaching functional programming to undergraduates at CUNY is important
+#+Author: Evan Misshula
+#+Email: emisshula@jjay.cuny.edu
+#+Date: 2018-03-28
+
+#+OPTIONS: H:2 toc:nil num:t
+#+TAGS:       Write(w) Update(u) Fix(f) Check(c) noexport(n) export(e)
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+LANGUAGE:  en
+#+STARTUP: beamer
+#+EXPORT_SELECT_TAGS: export(e)
+#+EXPORT_EXCLUDE_TAGS: noexport(n)
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [presetation]
+#+BEAMER_THEME: Madrid
+#+COLUMNS: %45ITEM %10BEAMER_ENV(Env) %10BEAMER_ACT(Act) %4BEAMER_COL(Col) %8BEAMER_OPT(Opt)
+
+
+
+
+
+* Monoids
+** Monoid Definition
+*** Monoid definition					       :B_definition:
+    :PROPERTIES:
+    :BEAMER_env: definition
+    :END:
+A data type, category or set is a *monoid* if it has a binary
+operation \bullet which is associative and has an identity.
+- \(\forall a,b,c \in S, (a \bullet b) \bullet c = a \bullet (b \bullet c) \)
+- \(e \bullet a = a \bullet e = a \)
+
+#+BEGIN_SRC haskell :session *plsHaskell* :exports code :results output :tangle no
+:set +m
+:{
+class Monoid m where
+    mempty :: m
+    mappend :: m -> m -> m
+    mconcat :: [m] -> m
+    mconcat = foldr mappend mempty
+:}
+#+end_src
+
+#+RESULTS:
+
+** Monoid functions defined
+*** Defining the monoid functions				    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- 'mempty' is just the identity function
+- mappend is the binary function
+  - *it doesn't just append*
+- mconcat reduces a list of monoid values and reduces them to one by
+  applying mappend
+
+** Monoid Laws
+*** The Monoid Laws are just the definition in Haskell		  :B_theorem:
+    :PROPERTIES:
+    :BEAMER_env: theorem
+    :END:
+- mappend mempty x = x
+- mappend x mempty = x
+- mappend (mappend x y) z = mappend x (mappend y z) 
+* Lists are monoids
+** Monoid examples
+*** List is a monoid						  :B_example:
+    :PROPERTIES:
+    :BEAMER_env: example
+    :END:
+- [] with (++) is a monoid
+  - id = ""
+- Natural numbers with (*) is a monoid
+  - id = 1
+- Natural numbers with (+) is a monoid
+  - id = 0
+
+
+
+
+

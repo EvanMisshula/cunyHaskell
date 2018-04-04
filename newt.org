@@ -1,0 +1,111 @@
+#+Title: Why teaching functional programming to undergraduates at CUNY is important
+#+Author: Evan Misshula
+#+Email: emisshula@jjay.cuny.edu
+#+Date: 2018-03-28
+
+#+OPTIONS: H:2 toc:nil num:t
+#+TAGS:       Write(w) Update(u) Fix(f) Check(c) noexport(n) export(e)
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+LANGUAGE:  en
+#+STARTUP: beamer
+#+EXPORT_SELECT_TAGS: export(e)
+#+EXPORT_EXCLUDE_TAGS: noexport(n)
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [presetation]
+#+BEAMER_THEME: Madrid
+#+COLUMNS: %45ITEM %10BEAMER_ENV(Env) %10BEAMER_ACT(Act) %4BEAMER_COL(Col) %8BEAMER_OPT(Opt)
+
+* The newtype keyword
+** Some lessons we've skipped                                  :B_definition:
+   :PROPERTIES:
+   :BEAMER_env: definition
+   :END:
+*** Defining types
+- /data/ will define a new algebraic type
+- /type/ creates a type synonym
+- /newtype/ creates new types from old types
+
+** Applicative Functor in two ways                                  :B_frame:
+   :PROPERTIES:
+   :BEAMER_env: frame
+   :END:
+*** function left, each argument right 			      :B_block:BMCOL:
+    :PROPERTIES:
+    :BEAMER_col: .48
+    :BEAMER_env: block
+    :END:
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output :tangle no
+:m Control.Applicative
+[(+1),(*100),(*5)] <*> [1..3]
+1==1
+#+end_src
+
+#+RESULTS:
+: 
+: [2,3,4,100,200,300,5,10,15]
+
+*** function left, every argument right			      :B_block:BMCOL:
+    :PROPERTIES:
+    :BEAMER_col: .48
+    :BEAMER_env: block
+    :END:
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output :tangle no
+:set +m
+:{
+instance Applicative ZipList where  
+        pure x = ZipList (repeat x)  
+        ZipList fs <*> ZipList xs = ZipList (zipWith (\f x -> f x) fs xs)  
+:}
+  getZipList $ ZipList [(+1),(*100),(*5)] <*> ZipList [1,2,3]
+  -- getZipList $
+  -- ZipList [(+1),(*100),(*5)]
+  --  <*> ZipList [1,2,3]
+1==1
+#+end_src
+
+#+RESULTS:
+: 
+: Prelude Control.Applicative| Prelude Control.Applicative| Prelude Control.Applicative| Prelude Control.Applicative| Prelude Control.Applicative> [2,200,15]
+
+
+
+** The newtype keyword                                              :B_frame:
+*** 'newtype' takes one type and wrap it			    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- to present it as another type
+- ~newtype ZipList a = ZipList {getZipList :: [a]}~
+- data can have multiple value contstructors
+** type vs. newtype vs. data examples
+*** 'data' to make new types                                        :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+- Here are additive and multiplicative types with multiple constructors
+#+BEGIN_SRC haskell :session *plsHaskell* :exports code :results output :tangle haskell/playChar.hs
+data Profession = Fighter | Archer | Wizard
+data Species = Human | Elf | Orc | Goblin
+data PlayerCharacter = PlayerCharacter Species Profession
+#+end_src
+
+** Using newtype to drive typeclass properties                      :B_block:
+   :PROPERTIES:
+   :BEAMER_env: block
+   :END:
+*** newtype
+#+BEGIN_SRC haskell :session *plsHaskell* :exports both :results output :tangle no
+newtype CharList = CharList {getCharList :: [Char]} deriving(Eq,Show)
+CharList "this will be shown!"
+CharList "benny" == CharList "benny"
+CharList "benny" == CharList "oisters"
+1==1
+#+end_src
+
+#+RESULTS:
+: 
+: CharList {getCharList = "this will be shown!"}
+: True
+: False
+
